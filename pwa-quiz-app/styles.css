@@ -92,6 +92,7 @@ body {
     border: 1px solid #ddd;
     display: inline-block;
     margin: 2px;
+    content: " ";
 }
 
 .score-rectangle.score-minus1 {
