@@ -1,9 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const h1 = document.querySelector('h1');
-    if (!h1.textContent.includes('v 1.01')) {
-        h1.innerHTML = 'PWA Quiz App <span class="version">v 1.01</span>';
-    }
+    h1.innerHTML = 'PWA Quiz App <span class="version">v 1.01</span>';
     
     const quizContainer = document.getElementById('quiz-container');
     const questionDisplay = document.getElementById('question-display');
