@@ -71,20 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
             answerElement.classList.add('answer-option');
             answerElement.dataset.index = index;
             answerElement.dataset.isCorrect = answer.isCorrect;
-            answerElement.innerHTML = `
-                <input type="checkbox" id="answer-${index}" class="answer-checkbox">
-                <label for="answer-${index}">${answer.text}</label>
-            `;
+            answerElement.textContent = answer.text;
             
-            answerElement.addEventListener('click', (e) => {
-                const checkbox = answerElement.querySelector('input[type="checkbox"]');
-                checkbox.checked = !checkbox.checked;
-                
+            answerElement.addEventListener('click', () => {
                 toggleAnswerSelection(answerElement, index, answer);
-                
-                if (e.target.tagName === 'INPUT') {
-                    e.preventDefault();
-                }
             });
             
             answersContainer.appendChild(answerElement);
