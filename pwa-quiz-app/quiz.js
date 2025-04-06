@@ -158,17 +158,47 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     };
     
+    const areAllQuestionsInRangeMastered = () => {
+        for (let i = questionRange.start - 1; i < questionRange.end; i++) {
+            const questionId = quizQuestions[i].question;
+            const score = getQuestionScore(questionId);
+            if (score !== 3) {
+                return false;
+            }
+        }
+        return true;
+    };
+    
     const loadRandomQuestion = () => {
         selectedAnswers = [];
         
         nextBtn.classList.add('hidden');
         evaluateBtn.classList.remove('hidden');
         
-        const rangeSize = questionRange.end - questionRange.start + 1;
-        const randomOffset = Math.floor(Math.random() * rangeSize);
-        const questionIndex = questionRange.start - 1 + randomOffset; // Adjust for 0-based array index
+        const allMastered = areAllQuestionsInRangeMastered();
         
-        currentQuestion = quizQuestions[questionIndex];
+        if (allMastered) {
+            const rangeSize = questionRange.end - questionRange.start + 1;
+            const randomOffset = Math.floor(Math.random() * rangeSize);
+            const questionIndex = questionRange.start - 1 + randomOffset; // Adjust for 0-based array index
+            currentQuestion = quizQuestions[questionIndex];
+        } else {
+            const availableQuestions = [];
+            for (let i = questionRange.start - 1; i < questionRange.end; i++) {
+                const questionId = quizQuestions[i].question;
+                const score = getQuestionScore(questionId);
+                if (score !== 3) {
+                    availableQuestions.push({
+                        index: i,
+                        question: quizQuestions[i]
+                    });
+                }
+            }
+            
+            const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+            const selectedQuestion = availableQuestions[randomIndex];
+            currentQuestion = selectedQuestion.question;
+        }
         
         const questionId = currentQuestion.question;
         const score = getQuestionScore(questionId);
