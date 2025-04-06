@@ -125,12 +125,12 @@ body {
 }
 
 .answer-option.incorrect {
-    background-color: #ffcdd2;
+    background-color: #fa041e;
     border-color: #f44336;
 }
 
 .answer-option.unselected-correct {
-    background-color: #f8bbd0;
+    background-color: #fcc7cd;
     border-color: #e91e63;
 }
 
