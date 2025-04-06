@@ -19,13 +19,16 @@
             <div class="question-section">
                 <p id="question-display"></p>
                 <div id="answers-container"></div>
-                <button id="evaluate-btn" class="quiz-btn">Evaluate Answers</button>
-                <button id="next-question-btn" style="display: none;" class="quiz-btn">Next Question</button>
+                <div class="button-container">
+                    <button id="evaluate-btn" class="quiz-btn">Evaluate Answers</button>
+                    <button id="next-question-btn" style="display: none;" class="quiz-btn">Next Question</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <script src="quiz.js?v=4"></script>
+    <script src="questions.js"></script>
+    <script src="quiz.js?v=6"></script>
     <script>
         // Register service worker for PWA functionality
         if ('serviceWorker' in navigator) {

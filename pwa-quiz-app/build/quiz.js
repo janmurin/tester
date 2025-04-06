@@ -132,6 +132,11 @@ const quizQuestions = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
+    const h1 = document.querySelector('h1');
+    if (!h1.textContent.includes('v 1.00')) {
+        h1.innerHTML = 'PWA Quiz App <span class="version">v 1.00</span>';
+    }
+    
     const quizContainer = document.getElementById('quiz-container');
     const questionDisplay = document.getElementById('question-display');
     const answersContainer = document.getElementById('answers-container');
@@ -150,24 +155,43 @@ document.addEventListener('DOMContentLoaded', () => {
         answersContainer.innerHTML = '';
         selectedAnswers = [];
         
-        currentQuestion.answers.forEach((answer, index) => {
+        let answerIndices = Array.from({ length: 8 }, (_, i) => i);
+        
+        for (let i = answerIndices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [answerIndices[i], answerIndices[j]] = [answerIndices[j], answerIndices[i]];
+        }
+        
+        const selectedIndices = answerIndices.slice(0, 4);
+        
+        selectedIndices.sort((a, b) => a - b);
+        
+        const displayOrder = [...selectedIndices];
+        for (let i = displayOrder.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [displayOrder[i], displayOrder[j]] = [displayOrder[j], displayOrder[i]];
+        }
+        
+        displayOrder.forEach((originalIndex) => {
+            const answer = currentQuestion.answers[originalIndex];
+            
             const answerDiv = document.createElement('div');
             answerDiv.className = 'answer-item';
             
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
-            checkbox.id = `answer-${index}`;
-            checkbox.dataset.index = index;
+            checkbox.id = `answer-${originalIndex}`;
+            checkbox.dataset.index = originalIndex;
             
             const label = document.createElement('label');
-            label.htmlFor = `answer-${index}`;
+            label.htmlFor = `answer-${originalIndex}`;
             label.textContent = answer.text;
             
             checkbox.addEventListener('change', (e) => {
                 if (e.target.checked) {
-                    selectedAnswers.push(index);
+                    selectedAnswers.push(originalIndex);
                 } else {
-                    selectedAnswers = selectedAnswers.filter(i => i !== index);
+                    selectedAnswers = selectedAnswers.filter(i => i !== originalIndex);
                 }
             });
             
@@ -192,8 +216,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const answerItems = document.querySelectorAll('.answer-item');
         
-        currentQuestion.answers.forEach((answer, index) => {
-            const answerDiv = answerItems[index];
+        const displayedIndices = Array.from(answerItems).map(item => {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            return parseInt(checkbox.dataset.index);
+        });
+        
+        displayedIndices.forEach((index, i) => {
+            const answer = currentQuestion.answers[index];
+            const answerDiv = answerItems[i];
             const checkbox = answerDiv.querySelector('input[type="checkbox"]');
             const isSelected = selectedAnswers.includes(index);
             
