@@ -12,19 +12,26 @@
 </head>
 <body>
     <div class="container">
-        <h1>PWA Quiz App</h1>
+        <header>
+            <h1>PWA Quiz app v 1.010</h1>
+        </header>
         
-        <!-- Quiz Container -->
-        <div class="quiz-container" id="quiz-container">
-            <div class="question-section">
-                <p id="question-display"></p>
-                <div id="answers-container"></div>
+        <main>
+            <div class="quiz-container">
+                <div id="question-container">
+                    <h2 id="question-text">Question will appear here</h2>
+                </div>
+                
+                <div id="answers-container">
+                    <!-- Answers will be dynamically inserted here -->
+                </div>
+                
                 <div class="button-container">
-                    <button id="evaluate-btn" class="quiz-btn">Evaluate Answers</button>
-                    <button id="next-question-btn" style="display: none;" class="quiz-btn">Next Question</button>
+                    <button id="evaluate-btn" class="btn">Evaluate</button>
+                    <button id="next-btn" class="btn hidden">Next Question</button>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
     <script src="questions.js"></script>

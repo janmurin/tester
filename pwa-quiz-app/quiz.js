@@ -1,112 +1,88 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-    const h1 = document.querySelector('h1');
-    h1.innerHTML = 'PWA Quiz App <span class="version">v 1.01</span>';
-    
-    const quizContainer = document.getElementById('quiz-container');
-    const questionDisplay = document.getElementById('question-display');
+    const questionText = document.getElementById('question-text');
     const answersContainer = document.getElementById('answers-container');
     const evaluateBtn = document.getElementById('evaluate-btn');
-    const nextQuestionBtn = document.getElementById('next-question-btn');
+    const nextBtn = document.getElementById('next-btn');
     
     let currentQuestion = null;
     let selectedAnswers = [];
     
-    const showRandomQuestion = () => {
+    const loadRandomQuestion = () => {
+        selectedAnswers = [];
+        
+        nextBtn.classList.add('hidden');
+        evaluateBtn.classList.remove('hidden');
+        
         const randomIndex = Math.floor(Math.random() * quizQuestions.length);
         currentQuestion = quizQuestions[randomIndex];
         
-        questionDisplay.textContent = currentQuestion.question;
+        questionText.textContent = currentQuestion.question;
         
         answersContainer.innerHTML = '';
-        selectedAnswers = [];
         
-        let answerIndices = Array.from({ length: 8 }, (_, i) => i);
+        const allAnswers = [...currentQuestion.answers];
+        const shuffledAnswers = shuffleArray(allAnswers).slice(0, 4);
         
-        for (let i = answerIndices.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [answerIndices[i], answerIndices[j]] = [answerIndices[j], answerIndices[i]];
-        }
-        
-        const selectedIndices = answerIndices.slice(0, 4);
-        
-        selectedIndices.sort((a, b) => a - b);
-        
-        const displayOrder = [...selectedIndices];
-        for (let i = displayOrder.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [displayOrder[i], displayOrder[j]] = [displayOrder[j], displayOrder[i]];
-        }
-        
-        displayOrder.forEach((originalIndex) => {
-            const answer = currentQuestion.answers[originalIndex];
+        shuffledAnswers.forEach((answer, index) => {
+            const answerElement = document.createElement('div');
+            answerElement.classList.add('answer-option');
+            answerElement.dataset.index = index;
+            answerElement.innerHTML = `
+                <input type="checkbox" id="answer-${index}" class="answer-checkbox">
+                <label for="answer-${index}">${answer.text}</label>
+            `;
             
-            const answerDiv = document.createElement('div');
-            answerDiv.className = 'answer-item';
+            answerElement.addEventListener('click', () => toggleAnswerSelection(answerElement, index, answer));
             
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = `answer-${originalIndex}`;
-            checkbox.dataset.index = originalIndex;
-            
-            const label = document.createElement('label');
-            label.htmlFor = `answer-${originalIndex}`;
-            label.textContent = answer.text;
-            
-            checkbox.addEventListener('change', (e) => {
-                if (e.target.checked) {
-                    selectedAnswers.push(originalIndex);
-                } else {
-                    selectedAnswers = selectedAnswers.filter(i => i !== originalIndex);
-                }
-            });
-            
-            answerDiv.appendChild(checkbox);
-            answerDiv.appendChild(label);
-            answersContainer.appendChild(answerDiv);
-        });
-        
-        evaluateBtn.style.display = 'block';
-        nextQuestionBtn.style.display = 'none';
-        
-        const previousAnswers = document.querySelectorAll('.answer-item');
-        previousAnswers.forEach(item => {
-            item.classList.remove('correct-selected', 'incorrect-selected', 'correct-not-selected');
+            answersContainer.appendChild(answerElement);
         });
     };
     
-    showRandomQuestion();
+    const toggleAnswerSelection = (element, index, answer) => {
+        element.classList.toggle('selected');
+        
+        const isSelected = element.classList.contains('selected');
+        
+        if (isSelected) {
+            selectedAnswers.push({ index, answer });
+        } else {
+            selectedAnswers = selectedAnswers.filter(item => item.index !== index);
+        }
+    };
     
-    evaluateBtn.addEventListener('click', () => {
-        if (!currentQuestion) return;
+    const shuffleArray = (array) => {
+        const newArray = [...array];
+        for (let i = newArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        }
+        return newArray;
+    };
+    
+    const evaluateAnswers = () => {
+        evaluateBtn.classList.add('hidden');
+        nextBtn.classList.remove('hidden');
         
-        const answerItems = document.querySelectorAll('.answer-item');
+        const answerElements = document.querySelectorAll('.answer-option');
         
-        const displayedIndices = Array.from(answerItems).map(item => {
-            const checkbox = item.querySelector('input[type="checkbox"]');
-            return parseInt(checkbox.dataset.index);
-        });
-        
-        displayedIndices.forEach((index, i) => {
-            const answer = currentQuestion.answers[index];
-            const answerDiv = answerItems[i];
-            const checkbox = answerDiv.querySelector('input[type="checkbox"]');
-            const isSelected = selectedAnswers.includes(index);
+        answerElements.forEach((element, index) => {
+            const isSelected = element.classList.contains('selected');
+            const answer = JSON.parse(JSON.stringify(currentQuestion.answers.find(a => 
+                a.text === element.querySelector('label').textContent)));
             
             if (isSelected && answer.isCorrect) {
-                answerDiv.classList.add('correct-selected');
+                element.classList.add('correct');
             } else if (isSelected && !answer.isCorrect) {
-                answerDiv.classList.add('incorrect-selected');
+                element.classList.add('incorrect');
             } else if (!isSelected && answer.isCorrect) {
-                answerDiv.classList.add('correct-not-selected');
+                element.classList.add('unselected-correct');
             }
-            
-            checkbox.disabled = true;
         });
-        
-        evaluateBtn.style.display = 'none';
-        nextQuestionBtn.style.display = 'block';
-    });
+    };
     
-    nextQuestionBtn.addEventListener('click', showRandomQuestion);
+    loadRandomQuestion();
+    
+    evaluateBtn.addEventListener('click', evaluateAnswers);
+    nextBtn.addEventListener('click', loadRandomQuestion);
 });
