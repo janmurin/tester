@@ -150,24 +150,43 @@ document.addEventListener('DOMContentLoaded', () => {
         answersContainer.innerHTML = '';
         selectedAnswers = [];
         
-        currentQuestion.answers.forEach((answer, index) => {
+        let answerIndices = Array.from({ length: 8 }, (_, i) => i);
+        
+        for (let i = answerIndices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [answerIndices[i], answerIndices[j]] = [answerIndices[j], answerIndices[i]];
+        }
+        
+        const selectedIndices = answerIndices.slice(0, 4);
+        
+        selectedIndices.sort((a, b) => a - b);
+        
+        const displayOrder = [...selectedIndices];
+        for (let i = displayOrder.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [displayOrder[i], displayOrder[j]] = [displayOrder[j], displayOrder[i]];
+        }
+        
+        displayOrder.forEach((originalIndex) => {
+            const answer = currentQuestion.answers[originalIndex];
+            
             const answerDiv = document.createElement('div');
             answerDiv.className = 'answer-item';
             
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
-            checkbox.id = `answer-${index}`;
-            checkbox.dataset.index = index;
+            checkbox.id = `answer-${originalIndex}`;
+            checkbox.dataset.index = originalIndex;
             
             const label = document.createElement('label');
-            label.htmlFor = `answer-${index}`;
+            label.htmlFor = `answer-${originalIndex}`;
             label.textContent = answer.text;
             
             checkbox.addEventListener('change', (e) => {
                 if (e.target.checked) {
-                    selectedAnswers.push(index);
+                    selectedAnswers.push(originalIndex);
                 } else {
-                    selectedAnswers = selectedAnswers.filter(i => i !== index);
+                    selectedAnswers = selectedAnswers.filter(i => i !== originalIndex);
                 }
             });
             
