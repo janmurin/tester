@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startIndexInput = document.getElementById('start-index');
     const endIndexInput = document.getElementById('end-index');
     const rangeErrorMessage = document.getElementById('range-error');
+    const scoreVisualization = document.getElementById('score-visualization');
     
     let currentQuestion = null;
     let selectedAnswers = [];
@@ -29,6 +30,36 @@ document.addEventListener('DOMContentLoaded', () => {
         const storedScores = localStorage.getItem('questionScores');
         if (storedScores) {
             questionScores = JSON.parse(storedScores);
+        }
+        renderScoreVisualization();
+    };
+    
+    const renderScoreVisualization = () => {
+        if (!scoreVisualization) return;
+        
+        scoreVisualization.innerHTML = '';
+        
+        for (let i = 0; i < quizQuestions.length; i++) {
+            const questionId = quizQuestions[i].question;
+            const score = getQuestionScore(questionId);
+            const questionIndex = i + 1; // 1-based index for display
+            
+            const rectangle = document.createElement('div');
+            rectangle.classList.add('score-rectangle');
+            
+            if (score === -1) {
+                rectangle.classList.add('score-minus1');
+            } else {
+                rectangle.classList.add(`score-${score}`);
+            }
+            
+            if (questionIndex >= questionRange.start && questionIndex <= questionRange.end) {
+                rectangle.classList.add('in-range');
+            }
+            
+            rectangle.title = `Question ${questionIndex}: Score ${score}`;
+            
+            scoreVisualization.appendChild(rectangle);
         }
     };
     
@@ -51,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         questionScores[questionId] = currentScore;
         saveQuestionScores();
+        renderScoreVisualization();
         
         return currentScore;
     };
@@ -120,6 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         questionRange.start = startValue;
         questionRange.end = endValue;
+        
+        renderScoreVisualization();
         
         return true;
     };
@@ -216,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // Initialize
-    loadQuestionScores();
+    loadQuestionScores(); // This also calls renderScoreVisualization
     validateRangeInputs();
     loadRandomQuestion();
     handleNavigation();

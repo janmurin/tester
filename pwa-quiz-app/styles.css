@@ -63,6 +63,55 @@ body {
     margin-top: 5px;
 }
 
+.score-visualization-container {
+    margin-top: 15px;
+}
+
+.score-visualization-container h4 {
+    margin-bottom: 10px;
+    color: #4285f4;
+    font-size: 1rem;
+}
+
+#score-visualization {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.score-rectangle {
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border: 1px solid transparent;
+}
+
+.score-rectangle.score-minus1 {
+    background-color: red;
+}
+
+.score-rectangle.score-0 {
+    background-color: white;
+}
+
+.score-rectangle.score-1 {
+    background-color: yellow;
+}
+
+.score-rectangle.score-2 {
+    background-color: orange;
+}
+
+.score-rectangle.score-3 {
+    background-color: green;
+}
+
+.score-rectangle.in-range {
+    border: 1px solid black;
+}
+
 /* Navigation styles */
 .main-nav {
     position: fixed;
