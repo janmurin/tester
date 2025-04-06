@@ -1,9 +1,11 @@
-const CACHE_NAME = 'quiz-app-v11';
+const CACHE_NAME = 'quiz-app-v12';
+const APP_VERSION = '1.023';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
     '/styles.css',
     '/quiz.js',
+    '/questions.js',
     '/manifest.json',
     '/icons/icon-72x72.png',
     '/icons/icon-96x96.png',

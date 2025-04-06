@@ -1,4 +1,23 @@
+const fetchAppVersion = async () => {
+    try {
+        const response = await fetch('service-worker.js');
+        const text = await response.text();
+        const versionMatch = text.match(/const APP_VERSION = ['"](.+)['"]/);
+        
+        if (versionMatch && versionMatch[1]) {
+            const versionDisplay = document.getElementById('version-display');
+            if (versionDisplay) {
+                versionDisplay.textContent = `v ${versionMatch[1]}`;
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching app version:', error);
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
+    fetchAppVersion();
+    
     // Quiz elements
     const questionText = document.getElementById('question-text');
     const answersContainer = document.getElementById('answers-container');
