@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const answerElement = document.createElement('div');
             answerElement.classList.add('answer-option');
             answerElement.dataset.index = index;
+            answerElement.dataset.isCorrect = answer.isCorrect;
             answerElement.innerHTML = `
                 <input type="checkbox" id="answer-${index}" class="answer-checkbox">
                 <label for="answer-${index}">${answer.text}</label>
@@ -110,20 +111,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         answerElements.forEach((element) => {
             const isSelected = element.classList.contains('selected');
-            const answerText = element.querySelector('label').textContent;
+            const isCorrect = element.dataset.isCorrect === 'true';
             
-            const answer = currentQuestion.answers.find(a => a.text === answerText);
-            
-            if (!answer) {
-                console.error('Could not find answer:', answerText);
-                return;
-            }
-            
-            if (isSelected && answer.isCorrect) {
+            if (isSelected && isCorrect) {
                 element.classList.add('correct');
-            } else if (isSelected && !answer.isCorrect) {
+            } else if (isSelected && !isCorrect) {
                 element.classList.add('incorrect');
-            } else if (!isSelected && answer.isCorrect) {
+            } else if (!isSelected && isCorrect) {
                 element.classList.add('unselected-correct');
             }
         });
