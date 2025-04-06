@@ -61,7 +61,43 @@
             </section>
 
             <section id="test-section" class="hidden-section">
-                <h2>TODO test will be implemented later</h2>
+                <div class="settings-container">
+                    <h3>Test Settings</h3>
+                    <div class="range-inputs">
+                        <div class="input-group">
+                            <label for="test-start-index">Start Index:</label>
+                            <input type="number" id="test-start-index" min="1" value="1">
+                        </div>
+                        <div class="input-group">
+                            <label for="test-end-index">End Index:</label>
+                            <input type="number" id="test-end-index" min="1">
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top: 10px;">
+                        <label for="test-question-count">Number of Questions:</label>
+                        <input type="number" id="test-question-count" min="1" value="10">
+                    </div>
+                    <p id="test-range-error" class="error-message hidden"></p>
+                    <div class="test-status">
+                        <p id="test-progress">Question 0/0, total score 0/0</p>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div id="test-question-container">
+                        <h2 id="test-question-text">Question will appear here</h2>
+                    </div>
+
+                    <div id="test-answers-container">
+                        <!-- Answers will be dynamically inserted here -->
+                    </div>
+
+                    <div class="button-container">
+                        <button id="test-evaluate-btn" class="btn">Evaluate</button>
+                        <button id="test-next-btn" class="btn hidden">Next Question</button>
+                        <button id="start-test-btn" class="btn">Start Test</button>
+                    </div>
+                </div>
             </section>
         </main>
     </div>

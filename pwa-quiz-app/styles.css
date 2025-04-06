@@ -223,7 +223,7 @@ body {
     margin-right: 10px;
 }
 
-#answers-container {
+#answers-container, #test-answers-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
