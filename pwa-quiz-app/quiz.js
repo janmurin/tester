@@ -10,8 +10,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const trainingSection = document.getElementById('training-section');
     const testSection = document.getElementById('test-section');
     
+    const startIndexInput = document.getElementById('start-index');
+    const endIndexInput = document.getElementById('end-index');
+    const rangeErrorMessage = document.getElementById('range-error');
+    
     let currentQuestion = null;
     let selectedAnswers = [];
+    let questionRange = {
+        start: 1,
+        end: quizQuestions.length
+    };
+    
+    endIndexInput.value = quizQuestions.length;
+    endIndexInput.max = quizQuestions.length;
     
     // Navigation functionality
     const handleNavigation = () => {
@@ -50,14 +61,49 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     
+    const validateRangeInputs = () => {
+        const startValue = parseInt(startIndexInput.value);
+        const endValue = parseInt(endIndexInput.value);
+        const totalQuestions = quizQuestions.length;
+        
+        rangeErrorMessage.classList.add('hidden');
+        rangeErrorMessage.textContent = '';
+        
+        if (isNaN(startValue) || startValue < 1) {
+            rangeErrorMessage.textContent = 'Start index must be at least 1';
+            rangeErrorMessage.classList.remove('hidden');
+            return false;
+        }
+        
+        if (isNaN(endValue) || endValue > totalQuestions) {
+            rangeErrorMessage.textContent = `End index cannot exceed ${totalQuestions}`;
+            rangeErrorMessage.classList.remove('hidden');
+            return false;
+        }
+        
+        if (startValue > endValue) {
+            rangeErrorMessage.textContent = 'Start index cannot be greater than end index';
+            rangeErrorMessage.classList.remove('hidden');
+            return false;
+        }
+        
+        questionRange.start = startValue;
+        questionRange.end = endValue;
+        
+        return true;
+    };
+    
     const loadRandomQuestion = () => {
         selectedAnswers = [];
         
         nextBtn.classList.add('hidden');
         evaluateBtn.classList.remove('hidden');
         
-        const randomIndex = Math.floor(Math.random() * quizQuestions.length);
-        currentQuestion = quizQuestions[randomIndex];
+        const rangeSize = questionRange.end - questionRange.start + 1;
+        const randomOffset = Math.floor(Math.random() * rangeSize);
+        const questionIndex = questionRange.start - 1 + randomOffset; // Adjust for 0-based array index
+        
+        currentQuestion = quizQuestions[questionIndex];
         
         questionText.textContent = currentQuestion.question;
         
@@ -123,10 +169,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // Initialize
+    validateRangeInputs();
     loadRandomQuestion();
     handleNavigation();
     
     // Event listeners
     evaluateBtn.addEventListener('click', evaluateAnswers);
     nextBtn.addEventListener('click', loadRandomQuestion);
+    
+    startIndexInput.addEventListener('change', () => {
+        if (validateRangeInputs()) {
+            loadRandomQuestion();
+        }
+    });
+    
+    endIndexInput.addEventListener('change', () => {
+        if (validateRangeInputs()) {
+            loadRandomQuestion();
+        }
+    });
 });
