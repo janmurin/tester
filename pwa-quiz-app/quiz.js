@@ -18,11 +18,17 @@ const fetchAppVersion = async () => {
 document.addEventListener('DOMContentLoaded', () => {
     fetchAppVersion();
     
-    // Quiz elements
     const questionText = document.getElementById('question-text');
     const answersContainer = document.getElementById('answers-container');
     const evaluateBtn = document.getElementById('evaluate-btn');
     const nextBtn = document.getElementById('next-btn');
+    
+    const testQuestionText = document.getElementById('test-question-text');
+    const testAnswersContainer = document.getElementById('test-answers-container');
+    const testEvaluateBtn = document.getElementById('test-evaluate-btn');
+    const testNextBtn = document.getElementById('test-next-btn');
+    const startTestBtn = document.getElementById('start-test-btn');
+    const testProgress = document.getElementById('test-progress');
     
     // Navigation elements
     const navLinks = document.querySelectorAll('.nav-link');
@@ -34,6 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const rangeErrorMessage = document.getElementById('range-error');
     const scoreVisualization = document.getElementById('score-visualization');
     
+    const testStartIndexInput = document.getElementById('test-start-index');
+    const testEndIndexInput = document.getElementById('test-end-index');
+    const testQuestionCountInput = document.getElementById('test-question-count');
+    const testRangeErrorMessage = document.getElementById('test-range-error');
+    
     let currentQuestion = null;
     let selectedAnswers = [];
     let questionScores = {};
@@ -42,8 +53,17 @@ document.addEventListener('DOMContentLoaded', () => {
         end: quizQuestions.length
     };
     
+    let testQuestions = [];
+    let currentTestQuestionIndex = 0;
+    let testScore = 0;
+    let testMaxScore = 0;
+    
     endIndexInput.value = quizQuestions.length;
     endIndexInput.max = quizQuestions.length;
+    
+    testEndIndexInput.value = quizQuestions.length;
+    testEndIndexInput.max = quizQuestions.length;
+    testQuestionCountInput.max = quizQuestions.length;
     
     const loadQuestionScores = () => {
         const storedScores = localStorage.getItem('questionScores');
@@ -106,6 +126,178 @@ document.addEventListener('DOMContentLoaded', () => {
         return currentScore;
     };
     
+    const validateTestRangeInputs = () => {
+        const startValue = parseInt(testStartIndexInput.value);
+        const endValue = parseInt(testEndIndexInput.value);
+        const questionCount = parseInt(testQuestionCountInput.value);
+        const totalQuestions = quizQuestions.length;
+        
+        testRangeErrorMessage.classList.add('hidden');
+        testRangeErrorMessage.textContent = '';
+        
+        if (isNaN(startValue) || startValue < 1) {
+            testRangeErrorMessage.textContent = 'Start index must be at least 1';
+            testRangeErrorMessage.classList.remove('hidden');
+            return false;
+        }
+        
+        if (isNaN(endValue) || endValue > totalQuestions) {
+            testRangeErrorMessage.textContent = `End index cannot exceed ${totalQuestions}`;
+            testRangeErrorMessage.classList.remove('hidden');
+            return false;
+        }
+        
+        if (startValue > endValue) {
+            testRangeErrorMessage.textContent = 'Start index cannot be greater than end index';
+            testRangeErrorMessage.classList.remove('hidden');
+            return false;
+        }
+        
+        const rangeSize = endValue - startValue + 1;
+        
+        if (isNaN(questionCount) || questionCount < 1) {
+            testRangeErrorMessage.textContent = 'Number of questions must be at least 1';
+            testRangeErrorMessage.classList.remove('hidden');
+            return false;
+        }
+        
+        if (questionCount > rangeSize) {
+            testRangeErrorMessage.textContent = `Number of questions cannot exceed range size (${rangeSize})`;
+            testRangeErrorMessage.classList.remove('hidden');
+            return false;
+        }
+        
+        return true;
+    };
+    
+    const initializeTest = () => {
+        if (!validateTestRangeInputs()) {
+            return;
+        }
+        
+        const startValue = parseInt(testStartIndexInput.value);
+        const endValue = parseInt(testEndIndexInput.value);
+        const questionCount = parseInt(testQuestionCountInput.value);
+        
+        testQuestions = [];
+        currentTestQuestionIndex = 0;
+        testScore = 0;
+        testMaxScore = questionCount * 4;
+        
+        const availableQuestions = [];
+        for (let i = startValue - 1; i < endValue; i++) {
+            availableQuestions.push(quizQuestions[i]);
+        }
+        
+        const shuffledQuestions = shuffleArray([...availableQuestions]);
+        
+        testQuestions = shuffledQuestions.slice(0, questionCount);
+        
+        testProgress.textContent = `Question 1/${questionCount}, total score 0/${testMaxScore}`;
+        
+        startTestBtn.classList.add('hidden');
+        testEvaluateBtn.classList.remove('hidden');
+        testNextBtn.classList.add('hidden');
+        
+        loadTestQuestion();
+    };
+    
+    const loadTestQuestion = () => {
+        selectedAnswers = [];
+        
+        if (currentTestQuestionIndex >= testQuestions.length) {
+            testQuestionText.textContent = `Test Complete! Your score: ${testScore}/${testMaxScore}`;
+            testAnswersContainer.innerHTML = '';
+            testEvaluateBtn.classList.add('hidden');
+            testNextBtn.classList.add('hidden');
+            startTestBtn.classList.remove('hidden');
+            return;
+        }
+        
+        currentQuestion = testQuestions[currentTestQuestionIndex];
+        
+        testQuestionText.textContent = currentQuestion.question;
+        testAnswersContainer.innerHTML = '';
+        
+        const allAnswers = [...currentQuestion.answers];
+        const shuffledAnswers = shuffleArray(allAnswers).slice(0, 4);
+        
+        shuffledAnswers.forEach((answer, index) => {
+            const answerElement = document.createElement('div');
+            answerElement.classList.add('answer-option');
+            answerElement.dataset.index = index;
+            answerElement.dataset.isCorrect = answer.isCorrect;
+            answerElement.textContent = answer.text;
+            
+            answerElement.addEventListener('click', () => {
+                toggleTestAnswerSelection(answerElement, index, answer);
+            });
+            
+            testAnswersContainer.appendChild(answerElement);
+        });
+    };
+    
+    const toggleTestAnswerSelection = (element, index, answer) => {
+        element.classList.toggle('selected');
+        
+        const isSelected = element.classList.contains('selected');
+        
+        if (isSelected) {
+            selectedAnswers.push({ index, answer });
+        } else {
+            selectedAnswers = selectedAnswers.filter(item => item.index !== index);
+        }
+    };
+    
+    const evaluateTestAnswers = () => {
+        testEvaluateBtn.classList.add('hidden');
+        testNextBtn.classList.remove('hidden');
+        
+        const answerElements = document.querySelectorAll('#test-answers-container .answer-option');
+        let incorrectCount = 0;
+        
+        answerElements.forEach((element) => {
+            const isSelected = element.classList.contains('selected');
+            const isCorrect = element.dataset.isCorrect === 'true';
+            
+            if (isSelected && isCorrect) {
+                element.classList.add('correct');
+            } else if (isSelected && !isCorrect) {
+                element.classList.add('incorrect');
+                incorrectCount++;
+            } else if (!isSelected && isCorrect) {
+                element.classList.add('unselected-correct');
+                incorrectCount++;
+            }
+        });
+        
+        let pointsEarned = 0;
+        if (incorrectCount === 0) {
+            pointsEarned = 4;
+        } else if (incorrectCount === 1) {
+            pointsEarned = 3;
+        } else if (incorrectCount === 2) {
+            pointsEarned = 2;
+        } else if (incorrectCount === 3) {
+            pointsEarned = 1;
+        }
+        
+        testScore += pointsEarned;
+        
+        testProgress.textContent = `Question ${currentTestQuestionIndex + 1}/${testQuestions.length}, total score ${testScore}/${testMaxScore}`;
+    };
+    
+    const nextTestQuestion = () => {
+        currentTestQuestionIndex++;
+        
+        testProgress.textContent = `Question ${currentTestQuestionIndex + 1}/${testQuestions.length}, total score ${testScore}/${testMaxScore}`;
+        
+        testNextBtn.classList.add('hidden');
+        testEvaluateBtn.classList.remove('hidden');
+        
+        loadTestQuestion();
+    };
+    
     // Navigation functionality
     const handleNavigation = () => {
         navLinks.forEach(link => {
@@ -138,6 +330,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else if (section === 'test') {
                     testSection.classList.remove('hidden-section');
                     testSection.classList.add('active-section');
+                    
+                    if (testEndIndexInput.value === '') {
+                        testEndIndexInput.value = quizQuestions.length;
+                    }
                 }
             });
         });
@@ -304,7 +500,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadRandomQuestion();
     handleNavigation();
     
-    // Event listeners
     evaluateBtn.addEventListener('click', evaluateAnswers);
     nextBtn.addEventListener('click', loadRandomQuestion);
     
@@ -319,4 +514,32 @@ document.addEventListener('DOMContentLoaded', () => {
             loadRandomQuestion();
         }
     });
+    
+    startTestBtn.addEventListener('click', initializeTest);
+    testEvaluateBtn.addEventListener('click', evaluateTestAnswers);
+    testNextBtn.addEventListener('click', nextTestQuestion);
+    
+    testStartIndexInput.addEventListener('change', () => {
+        validateTestRangeInputs();
+        updateTestQuestionCount();
+    });
+    
+    testEndIndexInput.addEventListener('change', () => {
+        validateTestRangeInputs();
+        updateTestQuestionCount();
+    });
+    
+    const updateTestQuestionCount = () => {
+        if (validateTestRangeInputs()) {
+            const startValue = parseInt(testStartIndexInput.value);
+            const endValue = parseInt(testEndIndexInput.value);
+            const rangeSize = endValue - startValue + 1;
+            
+            testQuestionCountInput.max = rangeSize;
+            
+            if (parseInt(testQuestionCountInput.value) > rangeSize) {
+                testQuestionCountInput.value = rangeSize;
+            }
+        }
+    };
 });
