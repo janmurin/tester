@@ -14,7 +14,7 @@
     <nav class="main-nav">
         <div class="nav-brand">
             <span class="app-name">PWA Quiz App</span>
-            <span class="version-text">v 1.014</span>
+            <span class="version-text">v 1.021</span>
         </div>
         <ul class="nav-items">
             <li><a href="#" class="nav-link active" data-section="training">Training</a></li>
@@ -38,17 +38,21 @@
                         </div>
                     </div>
                     <p id="range-error" class="error-message hidden"></p>
+                    <div class="score-visualization-container">
+                        <h4>Question Scores</h4>
+                        <div id="score-visualization"></div>
+                    </div>
                 </div>
-                
+
                 <div class="quiz-container">
                     <div id="question-container">
                         <h2 id="question-text">Question will appear here</h2>
                     </div>
-                    
+
                     <div id="answers-container">
                         <!-- Answers will be dynamically inserted here -->
                     </div>
-                    
+
                     <div class="button-container">
                         <button id="evaluate-btn" class="btn">Evaluate</button>
                         <button id="next-btn" class="btn hidden">Next Question</button>
@@ -63,7 +67,7 @@
     </div>
 
     <script src="questions.js"></script>
-    <script src="quiz.js?v=7"></script>
+    <script src="quiz.js?v=10"></script>
     <script>
         // Register service worker for PWA functionality
         if ('serviceWorker' in navigator) {

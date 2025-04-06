@@ -13,9 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const startIndexInput = document.getElementById('start-index');
     const endIndexInput = document.getElementById('end-index');
     const rangeErrorMessage = document.getElementById('range-error');
+    const scoreVisualization = document.getElementById('score-visualization');
     
     let currentQuestion = null;
     let selectedAnswers = [];
+    let questionScores = {};
     let questionRange = {
         start: 1,
         end: quizQuestions.length
@@ -23,6 +25,67 @@ document.addEventListener('DOMContentLoaded', () => {
     
     endIndexInput.value = quizQuestions.length;
     endIndexInput.max = quizQuestions.length;
+    
+    const loadQuestionScores = () => {
+        const storedScores = localStorage.getItem('questionScores');
+        if (storedScores) {
+            questionScores = JSON.parse(storedScores);
+        }
+        renderScoreVisualization();
+    };
+    
+    const renderScoreVisualization = () => {
+        if (!scoreVisualization) return;
+        
+        scoreVisualization.innerHTML = '';
+        
+        for (let i = 0; i < quizQuestions.length; i++) {
+            const questionId = quizQuestions[i].question;
+            const score = getQuestionScore(questionId);
+            const questionIndex = i + 1; // 1-based index for display
+            
+            const rectangle = document.createElement('div');
+            rectangle.className = 'score-rectangle';
+            
+            if (score === -1) {
+                rectangle.classList.add('score-minus1');
+            } else {
+                rectangle.classList.add(`score-${score}`);
+            }
+            
+            if (questionIndex >= questionRange.start && questionIndex <= questionRange.end) {
+                rectangle.classList.add('in-range');
+            }
+            
+            rectangle.title = `Question ${questionIndex}: Score ${score}`;
+            
+            scoreVisualization.appendChild(rectangle);
+        }
+    };
+    
+    const saveQuestionScores = () => {
+        localStorage.setItem('questionScores', JSON.stringify(questionScores));
+    };
+    
+    const getQuestionScore = (questionId) => {
+        return questionScores[questionId] !== undefined ? questionScores[questionId] : 0;
+    };
+    
+    const updateQuestionScore = (questionId, isAllCorrect) => {
+        let currentScore = getQuestionScore(questionId);
+        
+        if (isAllCorrect) {
+            currentScore = Math.min(3, currentScore + 1);
+        } else {
+            currentScore = Math.max(-1, currentScore - 1);
+        }
+        
+        questionScores[questionId] = currentScore;
+        saveQuestionScores();
+        renderScoreVisualization();
+        
+        return currentScore;
+    };
     
     // Navigation functionality
     const handleNavigation = () => {
@@ -90,6 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
         questionRange.start = startValue;
         questionRange.end = endValue;
         
+        renderScoreVisualization();
+        
         return true;
     };
     
@@ -105,7 +170,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         currentQuestion = quizQuestions[questionIndex];
         
-        questionText.textContent = currentQuestion.question;
+        const questionId = currentQuestion.question;
+        const score = getQuestionScore(questionId);
+        
+        questionText.innerHTML = `<span class="question-score">Score: ${score}</span> ${currentQuestion.question}`;
         
         answersContainer.innerHTML = '';
         
@@ -153,6 +221,8 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.classList.remove('hidden');
         
         const answerElements = document.querySelectorAll('.answer-option');
+        let hasIncorrectAnswer = false;
+        let allCorrectAnswersSelected = true;
         
         answerElements.forEach((element) => {
             const isSelected = element.classList.contains('selected');
@@ -162,13 +232,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 element.classList.add('correct');
             } else if (isSelected && !isCorrect) {
                 element.classList.add('incorrect');
+                hasIncorrectAnswer = true;
             } else if (!isSelected && isCorrect) {
                 element.classList.add('unselected-correct');
+                allCorrectAnswersSelected = false;
             }
         });
+        
+        const questionId = currentQuestion.question;
+        const isAllCorrect = !hasIncorrectAnswer && allCorrectAnswersSelected;
+        const newScore = updateQuestionScore(questionId, isAllCorrect);
+        
+        const scoreElement = document.querySelector('.question-score');
+        if (scoreElement) {
+            scoreElement.textContent = `Score: ${newScore}`;
+        }
     };
     
     // Initialize
+    loadQuestionScores(); // This also calls renderScoreVisualization
     validateRangeInputs();
     loadRandomQuestion();
     handleNavigation();
