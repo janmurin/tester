@@ -133,12 +133,7 @@ const quizQuestions = [
 
 document.addEventListener('DOMContentLoaded', () => {
     const h1 = document.querySelector('h1');
-    if (!h1.querySelector('.version')) {
-        const versionSpan = document.createElement('span');
-        versionSpan.className = 'version';
-        versionSpan.textContent = 'v 1.00';
-        h1.appendChild(versionSpan);
-    }
+    h1.innerHTML = 'PWA Quiz App <span class="version">v 1.00</span>';
     
     const quizContainer = document.getElementById('quiz-container');
     const questionDisplay = document.getElementById('question-display');
