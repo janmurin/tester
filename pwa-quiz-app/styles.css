@@ -93,10 +93,11 @@ body {
 }
 
 #score-visualization {
-    display: grid;
-    grid-template-columns: repeat(25, 10px);
-    grid-gap: 2px;
-    justify-content: start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    max-width: 100%;
+    padding: 5px;
 }
 
 .score-rectangle {
@@ -104,7 +105,7 @@ body {
     height: 10px;
     background-color: #f0f0f0;
     border: 1px solid #ddd;
-    display: block;
+    flex-shrink: 0;
 }
 
 .score-rectangle.score-minus1 {
