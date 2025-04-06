@@ -1,12 +1,54 @@
-
 document.addEventListener('DOMContentLoaded', () => {
+    // Quiz elements
     const questionText = document.getElementById('question-text');
     const answersContainer = document.getElementById('answers-container');
     const evaluateBtn = document.getElementById('evaluate-btn');
     const nextBtn = document.getElementById('next-btn');
     
+    // Navigation elements
+    const navLinks = document.querySelectorAll('.nav-link');
+    const trainingSection = document.getElementById('training-section');
+    const testSection = document.getElementById('test-section');
+    
     let currentQuestion = null;
     let selectedAnswers = [];
+    
+    // Navigation functionality
+    const handleNavigation = () => {
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                navLinks.forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                const section = link.dataset.section;
+                
+                // Hide all sections
+                trainingSection.classList.remove('active-section');
+                trainingSection.classList.add('hidden-section');
+                testSection.classList.remove('active-section');
+                testSection.classList.add('hidden-section');
+                
+                // Show selected section
+                if (section === 'training') {
+                    trainingSection.classList.remove('hidden-section');
+                    trainingSection.classList.add('active-section');
+                    
+                    // Load a new question if needed
+                    if (!currentQuestion) {
+                        loadRandomQuestion();
+                    }
+                } else if (section === 'test') {
+                    testSection.classList.remove('hidden-section');
+                    testSection.classList.add('active-section');
+                }
+            });
+        });
+    };
     
     const loadRandomQuestion = () => {
         selectedAnswers = [];
@@ -81,8 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     
+    // Initialize
     loadRandomQuestion();
+    handleNavigation();
     
+    // Event listeners
     evaluateBtn.addEventListener('click', evaluateAnswers);
     nextBtn.addEventListener('click', loadRandomQuestion);
 });
