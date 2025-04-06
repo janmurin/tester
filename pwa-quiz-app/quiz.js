@@ -108,10 +108,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const answerElements = document.querySelectorAll('.answer-option');
         
-        answerElements.forEach((element, index) => {
+        answerElements.forEach((element) => {
             const isSelected = element.classList.contains('selected');
-            const answer = JSON.parse(JSON.stringify(currentQuestion.answers.find(a => 
-                a.text === element.querySelector('label').textContent)));
+            const answerText = element.querySelector('label').textContent;
+            
+            const answer = currentQuestion.answers.find(a => a.text === answerText);
+            
+            if (!answer) {
+                console.error('Could not find answer:', answerText);
+                return;
+            }
             
             if (isSelected && answer.isCorrect) {
                 element.classList.add('correct');
