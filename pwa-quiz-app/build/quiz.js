@@ -211,8 +211,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const answerItems = document.querySelectorAll('.answer-item');
         
-        currentQuestion.answers.forEach((answer, index) => {
-            const answerDiv = answerItems[index];
+        const displayedIndices = Array.from(answerItems).map(item => {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            return parseInt(checkbox.dataset.index);
+        });
+        
+        displayedIndices.forEach((index, i) => {
+            const answer = currentQuestion.answers[index];
+            const answerDiv = answerItems[i];
             const checkbox = answerDiv.querySelector('input[type="checkbox"]');
             const isSelected = selectedAnswers.includes(index);
             
