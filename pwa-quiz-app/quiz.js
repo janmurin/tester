@@ -12,6 +12,37 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let currentQuestion = null;
     let selectedAnswers = [];
+    let questionScores = {};
+    
+    const loadQuestionScores = () => {
+        const storedScores = localStorage.getItem('questionScores');
+        if (storedScores) {
+            questionScores = JSON.parse(storedScores);
+        }
+    };
+    
+    const saveQuestionScores = () => {
+        localStorage.setItem('questionScores', JSON.stringify(questionScores));
+    };
+    
+    const getQuestionScore = (questionId) => {
+        return questionScores[questionId] !== undefined ? questionScores[questionId] : 0;
+    };
+    
+    const updateQuestionScore = (questionId, isAllCorrect) => {
+        let currentScore = getQuestionScore(questionId);
+        
+        if (isAllCorrect) {
+            currentScore = Math.min(3, currentScore + 1);
+        } else {
+            currentScore = Math.max(-1, currentScore - 1);
+        }
+        
+        questionScores[questionId] = currentScore;
+        saveQuestionScores();
+        
+        return currentScore;
+    };
     
     // Navigation functionality
     const handleNavigation = () => {
@@ -59,7 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomIndex = Math.floor(Math.random() * quizQuestions.length);
         currentQuestion = quizQuestions[randomIndex];
         
-        questionText.textContent = currentQuestion.question;
+        const questionId = currentQuestion.question;
+        const score = getQuestionScore(questionId);
+        
+        questionText.innerHTML = `<span class="question-score">Score: ${score}</span> ${currentQuestion.question}`;
         
         answersContainer.innerHTML = '';
         
@@ -107,6 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.classList.remove('hidden');
         
         const answerElements = document.querySelectorAll('.answer-option');
+        let hasIncorrectAnswer = false;
+        let allCorrectAnswersSelected = true;
         
         answerElements.forEach((element) => {
             const isSelected = element.classList.contains('selected');
@@ -116,13 +152,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 element.classList.add('correct');
             } else if (isSelected && !isCorrect) {
                 element.classList.add('incorrect');
+                hasIncorrectAnswer = true;
             } else if (!isSelected && isCorrect) {
                 element.classList.add('unselected-correct');
+                allCorrectAnswersSelected = false;
             }
         });
+        
+        const questionId = currentQuestion.question;
+        const isAllCorrect = !hasIncorrectAnswer && allCorrectAnswersSelected;
+        const newScore = updateQuestionScore(questionId, isAllCorrect);
+        
+        const scoreElement = document.querySelector('.question-score');
+        if (scoreElement) {
+            scoreElement.textContent = `Score: ${newScore}`;
+        }
     };
     
     // Initialize
+    loadQuestionScores();
     loadRandomQuestion();
     handleNavigation();
     
