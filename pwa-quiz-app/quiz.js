@@ -290,7 +290,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextTestQuestion = () => {
         currentTestQuestionIndex++;
         
-        testProgress.textContent = `Question ${currentTestQuestionIndex + 1}/${testQuestions.length}, total score ${testScore}/${testMaxScore}`;
+        const displayQuestionNumber = Math.min(currentTestQuestionIndex + 1, testQuestions.length);
+        testProgress.textContent = `Question ${displayQuestionNumber}/${testQuestions.length}, total score ${testScore}/${testMaxScore}`;
         
         testNextBtn.classList.add('hidden');
         testEvaluateBtn.classList.remove('hidden');
