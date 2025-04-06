@@ -37,7 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderScoreVisualization = () => {
         if (!scoreVisualization) return;
         
-        let html = '';
+        let html = '<div class="score-table">';
+        let currentRow = '<div class="score-row">';
+        const itemsPerRow = 25; // Adjust based on container width
         
         for (let i = 0; i < quizQuestions.length; i++) {
             const questionId = quizQuestions[i].question;
@@ -47,9 +49,22 @@ document.addEventListener('DOMContentLoaded', () => {
             let scoreClass = score === -1 ? 'score-minus1' : `score-${score}`;
             let rangeClass = (questionIndex >= questionRange.start && questionIndex <= questionRange.end) ? 'in-range' : '';
             
-            html += `<span class="score-rectangle ${scoreClass} ${rangeClass}" 
-                      title="Question ${questionIndex}: Score ${score}"></span>`;
+            currentRow += `<div class="score-rectangle ${scoreClass} ${rangeClass}" 
+                          title="Question ${questionIndex}: Score ${score}"></div>`;
+            
+            if ((i + 1) % itemsPerRow === 0) {
+                currentRow += '</div>';
+                html += currentRow;
+                currentRow = '<div class="score-row">';
+            }
         }
+        
+        if (currentRow !== '<div class="score-row">') {
+            currentRow += '</div>';
+            html += currentRow;
+        }
+        
+        html += '</div>';
         
         scoreVisualization.innerHTML = html;
     };
