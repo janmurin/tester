@@ -76,7 +76,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 <label for="answer-${index}">${answer.text}</label>
             `;
             
-            answerElement.addEventListener('click', () => toggleAnswerSelection(answerElement, index, answer));
+            answerElement.addEventListener('click', (e) => {
+                const checkbox = answerElement.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                
+                toggleAnswerSelection(answerElement, index, answer);
+                
+                if (e.target.tagName === 'INPUT') {
+                    e.preventDefault();
+                }
+            });
             
             answersContainer.appendChild(answerElement);
         });
