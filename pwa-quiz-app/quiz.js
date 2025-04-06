@@ -133,10 +133,12 @@ const quizQuestions = [
 
 document.addEventListener('DOMContentLoaded', () => {
     const h1 = document.querySelector('h1');
-    const versionSpan = document.createElement('span');
-    versionSpan.className = 'version';
-    versionSpan.textContent = 'v 1.00';
-    h1.appendChild(versionSpan);
+    if (!h1.querySelector('.version')) {
+        const versionSpan = document.createElement('span');
+        versionSpan.className = 'version';
+        versionSpan.textContent = 'v 1.00';
+        h1.appendChild(versionSpan);
+    }
     
     const quizContainer = document.getElementById('quiz-container');
     const questionDisplay = document.getElementById('question-display');
