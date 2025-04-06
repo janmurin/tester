@@ -25,6 +25,21 @@
     <div class="container">
         <main>
             <section id="training-section" class="active-section">
+                <div class="settings-container">
+                    <h3>Question Range Settings</h3>
+                    <div class="range-inputs">
+                        <div class="input-group">
+                            <label for="start-index">Start Index:</label>
+                            <input type="number" id="start-index" min="1" value="1">
+                        </div>
+                        <div class="input-group">
+                            <label for="end-index">End Index:</label>
+                            <input type="number" id="end-index" min="1">
+                        </div>
+                    </div>
+                    <p id="range-error" class="error-message hidden"></p>
+                </div>
+                
                 <div class="quiz-container">
                     <div id="question-container">
                         <h2 id="question-text">Question will appear here</h2>
