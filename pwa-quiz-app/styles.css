@@ -84,28 +84,35 @@ body {
 .score-rectangle {
     width: 10px;
     height: 10px;
-    background-color: white;
-    border: 1px solid transparent;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    display: inline-block;
+    margin: 1px;
 }
 
 .score-rectangle.score-minus1 {
-    background-color: red;
+    background-color: #ff0000; /* Red */
+    border-color: #cc0000;
 }
 
 .score-rectangle.score-0 {
-    background-color: white;
+    background-color: #f0f0f0; /* Light gray */
+    border-color: #ddd;
 }
 
 .score-rectangle.score-1 {
-    background-color: yellow;
+    background-color: #ffff00; /* Yellow */
+    border-color: #cccc00;
 }
 
 .score-rectangle.score-2 {
-    background-color: orange;
+    background-color: #ffa500; /* Orange */
+    border-color: #cc8400;
 }
 
 .score-rectangle.score-3 {
-    background-color: green;
+    background-color: #00cc00; /* Green */
+    border-color: #009900;
 }
 
 .score-rectangle.in-range {
