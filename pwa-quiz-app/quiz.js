@@ -39,6 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         scoreVisualization.innerHTML = '';
         
+        const fragment = document.createDocumentFragment();
+        
         for (let i = 0; i < quizQuestions.length; i++) {
             const questionId = quizQuestions[i].question;
             const score = getQuestionScore(questionId);
@@ -59,8 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             rectangle.title = `Question ${questionIndex}: Score ${score}`;
             
-            scoreVisualization.appendChild(rectangle);
+            fragment.appendChild(rectangle);
         }
+        
+        scoreVisualization.appendChild(fragment);
+        
+        scoreVisualization.offsetHeight;
     };
     
     const saveQuestionScores = () => {
