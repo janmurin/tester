@@ -37,36 +37,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderScoreVisualization = () => {
         if (!scoreVisualization) return;
         
-        scoreVisualization.innerHTML = '';
-        
-        const fragment = document.createDocumentFragment();
+        let html = '';
         
         for (let i = 0; i < quizQuestions.length; i++) {
             const questionId = quizQuestions[i].question;
             const score = getQuestionScore(questionId);
             const questionIndex = i + 1; // 1-based index for display
             
-            const rectangle = document.createElement('div');
-            rectangle.classList.add('score-rectangle');
+            let scoreClass = score === -1 ? 'score-minus1' : `score-${score}`;
+            let rangeClass = (questionIndex >= questionRange.start && questionIndex <= questionRange.end) ? 'in-range' : '';
             
-            if (score === -1) {
-                rectangle.classList.add('score-minus1');
-            } else {
-                rectangle.classList.add(`score-${score}`);
-            }
-            
-            if (questionIndex >= questionRange.start && questionIndex <= questionRange.end) {
-                rectangle.classList.add('in-range');
-            }
-            
-            rectangle.title = `Question ${questionIndex}: Score ${score}`;
-            
-            fragment.appendChild(rectangle);
+            html += `<span class="score-rectangle ${scoreClass} ${rangeClass}" 
+                      title="Question ${questionIndex}: Score ${score}"></span>`;
         }
         
-        scoreVisualization.appendChild(fragment);
-        
-        scoreVisualization.offsetHeight;
+        scoreVisualization.innerHTML = html;
     };
     
     const saveQuestionScores = () => {
