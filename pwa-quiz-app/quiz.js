@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
         testScore += pointsEarned;
         
         if (currentQuestion) {
-            const questionId = currentQuestion.question;
+            const questionId = currentQuestion.Id;
             sendAnalyticsRequest(questionId, pointsEarned, true);
         }
         
@@ -520,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isAllCorrect = !hasIncorrectAnswer && allCorrectAnswersSelected;
         const newScore = updateQuestionScore(questionId, isAllCorrect);
         
-        sendAnalyticsRequest(questionId, newScore, false);
+        sendAnalyticsRequest(currentQuestion.Id, newScore, false);
         
         const scoreElement = document.querySelector('.question-score');
         if (scoreElement) {
