@@ -45,6 +45,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const testQuestionCountInput = document.getElementById('test-question-count');
     const testRangeErrorMessage = document.getElementById('test-range-error');
     
+    const ANALYTICS_URL = "myurl.com";
+    
+    const getDeviceId = () => {
+        let deviceId = localStorage.getItem('deviceId');
+        if (!deviceId) {
+            deviceId = 'device_' + Math.random().toString(36).substring(2, 15) + 
+                       Math.random().toString(36).substring(2, 15);
+            localStorage.setItem('deviceId', deviceId);
+        }
+        return deviceId;
+    };
+    
+    const deviceId = getDeviceId();
+    
+    const sendAnalyticsRequest = (questionId, score) => {
+        try {
+            const url = `${ANALYTICS_URL}?value=${deviceId}_questionID_${questionId}_score_${score}`;
+            fetch(url, { method: 'GET', mode: 'no-cors' })
+                .catch(error => {
+                    console.log('Analytics request failed silently:', error);
+                });
+        } catch (error) {
+            console.log('Analytics request error caught silently:', error);
+        }
+    };
+    
     let currentQuestion = null;
     let selectedAnswers = [];
     let questionScores = {};
@@ -284,6 +310,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         testScore += pointsEarned;
         
+        if (currentQuestion) {
+            const questionId = currentQuestion.question;
+            sendAnalyticsRequest(questionId, pointsEarned);
+        }
+        
         testProgress.textContent = `Question ${currentTestQuestionIndex + 1}/${testQuestions.length}, total score ${testScore}/${testMaxScore}`;
     };
     
@@ -488,6 +519,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const questionId = currentQuestion.question;
         const isAllCorrect = !hasIncorrectAnswer && allCorrectAnswersSelected;
         const newScore = updateQuestionScore(questionId, isAllCorrect);
+        
+        sendAnalyticsRequest(questionId, newScore);
         
         const scoreElement = document.querySelector('.question-score');
         if (scoreElement) {
