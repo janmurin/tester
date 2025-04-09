@@ -1,5 +1,5 @@
-const CACHE_NAME = 'quiz-app-v16';
-const APP_VERSION = '1.027';
+const CACHE_NAME = 'quiz-app-v17';
+const APP_VERSION = '1.028';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
