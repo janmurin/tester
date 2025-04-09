@@ -59,9 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const deviceId = getDeviceId();
     
-    const sendAnalyticsRequest = (questionId, score) => {
+    const sendAnalyticsRequest = (questionId, score, isTest) => {
         try {
-            const url = `${ANALYTICS_URL}?value=${deviceId}_questionID_${questionId}_score_${score}`;
+            const url = `${ANALYTICS_URL}?value=${deviceId}_questionID_${questionId}_score_${score}_isTest_${isTest}`;
             fetch(url, { method: 'GET', mode: 'no-cors' })
                 .catch(error => {
                     console.log('Analytics request failed silently:', error);
@@ -311,8 +311,8 @@ document.addEventListener('DOMContentLoaded', () => {
         testScore += pointsEarned;
         
         if (currentQuestion) {
-            const questionId = currentQuestion.question;
-            sendAnalyticsRequest(questionId, pointsEarned);
+            const questionId = currentQuestion.Id;
+            sendAnalyticsRequest(questionId, pointsEarned, true);
         }
         
         testProgress.textContent = `Question ${currentTestQuestionIndex + 1}/${testQuestions.length}, total score ${testScore}/${testMaxScore}`;
@@ -516,11 +516,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        const questionId = currentQuestion.question;
+        const questionId = currentQuestion.Id;
         const isAllCorrect = !hasIncorrectAnswer && allCorrectAnswersSelected;
         const newScore = updateQuestionScore(questionId, isAllCorrect);
         
-        sendAnalyticsRequest(questionId, newScore);
+        sendAnalyticsRequest(questionId, newScore, false);
         
         const scoreElement = document.querySelector('.question-score');
         if (scoreElement) {
