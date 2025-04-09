@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const testQuestionCountInput = document.getElementById('test-question-count');
     const testRangeErrorMessage = document.getElementById('test-range-error');
     
-    const ANALYTICS_URL = "https://script.google.com/macros/s/AKfycbxeedamH87TxFwrAGRnvZpTAEJOvk7tIRSuYEIgNo8uCttOajOs_4olX2alFbNxig7V/exec";
+    const ANALYTICS_URL = "https://script.google.com/macros/s/AKfycbx3Xb1_H5NwBf1qfJAWtLUHv7XCHMPE6mvNAM5HYawk9_HrCSDpBGJvrMVWgMv5Re6A/exec";
     
     const getDeviceId = () => {
         let deviceId = localStorage.getItem('deviceId');
