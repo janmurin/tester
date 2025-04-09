@@ -516,11 +516,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        const questionId = currentQuestion.Id;
+        const questionId = currentQuestion.question;
         const isAllCorrect = !hasIncorrectAnswer && allCorrectAnswersSelected;
         const newScore = updateQuestionScore(questionId, isAllCorrect);
         
-        sendAnalyticsRequest(questionId, newScore, false);
+        sendAnalyticsRequest(currentQuestion.Id, newScore, false);
         
         const scoreElement = document.querySelector('.question-score');
         if (scoreElement) {
