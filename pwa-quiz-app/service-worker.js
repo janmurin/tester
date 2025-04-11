@@ -47,33 +47,37 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     // Handle requests with the base path
     const requestUrl = new URL(event.request.url);
-    if (!requestUrl.pathname.startsWith(BASE_PATH)) {
-        return;
-    }
-
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                if (response) {
-                    return response;
-                }
-                
-                const fetchRequest = event.request.clone();
-                
-                return fetch(fetchRequest).then(response => {
-                    if (!response || response.status !== 200 || response.type !== 'basic') {
+    const path = requestUrl.pathname;
+    
+    // Skip non-GET requests
+    if (event.request.method !== 'GET') return;
+    
+    // Handle requests within our scope
+    if (path.startsWith(BASE_PATH)) {
+        event.respondWith(
+            caches.match(event.request)
+                .then(response => {
+                    if (response) {
                         return response;
                     }
                     
-                    const responseToCache = response.clone();
+                    const fetchRequest = event.request.clone();
                     
-                    caches.open(CACHE_NAME)
-                        .then(cache => {
-                            cache.put(event.request, responseToCache);
-                        });
-                    
-                    return response;
-                });
-            })
-    );
+                    return fetch(fetchRequest).then(response => {
+                        if (!response || response.status !== 200 || response.type !== 'basic') {
+                            return response;
+                        }
+                        
+                        const responseToCache = response.clone();
+                        
+                        caches.open(CACHE_NAME)
+                            .then(cache => {
+                                cache.put(event.request, responseToCache);
+                            });
+                        
+                        return response;
+                    });
+                })
+        );
+    }
 });
