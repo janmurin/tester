@@ -86,42 +86,13 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
-/* Adjust gap for desktop screens */
-@media (min-width: 768px) {
-    #score-visualization {
-        gap: 3px;
-        padding: 8px;
-    }
-}
-
-@media (min-width: 1024px) {
-    #score-visualization {
-        gap: 4px;
-        padding: 10px;
-    }
-}
-
+/* Mobile-first base styles */
 .score-rectangle {
     width: 10px;
     height: 10px;
     background-color: #f0f0f0;
     border: 1px solid #ddd;
     flex-shrink: 0;
-}
-
-/* Make score rectangles larger on desktop screens */
-@media (min-width: 768px) {
-    .score-rectangle {
-        width: 15px;
-        height: 15px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .score-rectangle {
-        width: 20px;
-        height: 20px;
-    }
 }
 
 .score-rectangle.score-minus1 {
@@ -464,16 +435,28 @@ body {
     }
 }
 
-/* Force mobile styles for testing */
-@media screen and (max-width: 9999px) {
+/* Tablet styles */
+@media (min-width: 768px) {
     .score-rectangle {
-        width: 6px;
-        height: 6px;
-        border-width: 0.5px;
+        width: 15px;
+        height: 15px;
     }
-
+    
     #score-visualization {
-        gap: 1px;
-        padding: 2px;
+        gap: 3px;
+        padding: 8px;
+    }
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+    .score-rectangle {
+        width: 20px;
+        height: 20px;
+    }
+    
+    #score-visualization {
+        gap: 4px;
+        padding: 10px;
     }
 }
