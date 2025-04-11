@@ -6,9 +6,9 @@
     <meta name="theme-color" content="#4285f4">
     <meta name="description" content="A simple quiz PWA that works offline">
     <title>PWA Quiz App</title>
-    <link rel="stylesheet" href="/tester/styles.css">
-    <link rel="manifest" href="/tester/manifest.json">
-    <link rel="apple-touch-icon" href="/tester/icons/icon-192x192.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
 </head>
 <body>
     <nav class="main-nav">
@@ -102,9 +102,9 @@
         </main>
     </div>
 
-    <script src="/tester/config.js"></script>
-    <script src="/tester/questions.js"></script>
-    <script src="/tester/quiz.js?v=10"></script>
+    <script src="config.js"></script>
+    <script src="questions.js"></script>
+    <script src="quiz.js?v=10"></script>
     <script>
         // Service Worker Registration
         let serviceWorkerRegistration = null;
@@ -129,7 +129,7 @@
             }
 
             try {
-                serviceWorkerRegistration = await navigator.serviceWorker.register('/tester/service-worker.js');
+                serviceWorkerRegistration = await navigator.serviceWorker.register('service-worker.js');
                 console.log('Service Worker registered with scope:', serviceWorkerRegistration.scope);
 
                 // Wait for the service worker to be in the 'activated' state
