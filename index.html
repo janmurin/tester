@@ -14,7 +14,7 @@
     <nav class="main-nav">
         <div class="nav-brand">
             <span class="app-name">PWA Quiz App</span>
-            <span class="version-text" id="version-display">v 1.032</span>
+            <span class="version-text" id="version-display">v 1.034</span>
         </div>
         <ul class="nav-items">
             <li><a href="#" class="nav-link active" data-section="training">Training</a></li>
@@ -109,6 +109,7 @@
         // Service Worker Registration
         let serviceWorkerRegistration = null;
         let isServiceWorkerReady = false;
+        let isUpdateAvailable = false;
 
         const registerServiceWorker = async () => {
             // Check if running from file protocol
@@ -132,6 +133,38 @@
                 serviceWorkerRegistration = await navigator.serviceWorker.register('service-worker.js');
                 console.log('Service Worker registered with scope:', serviceWorkerRegistration.scope);
 
+                // Listen for updates
+                serviceWorkerRegistration.addEventListener('updatefound', () => {
+                    const newWorker = serviceWorkerRegistration.installing;
+                    console.log('[Client] New service worker version detected');
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            console.log('[Client] New version is ready to be activated');
+                            isUpdateAvailable = true;
+                            // Show update notification
+                            if (confirm('A new version is available! Would you like to update?')) {
+                                console.log('[Client] User accepted update, sending SKIP_WAITING message');
+                                newWorker.postMessage({ type: 'SKIP_WAITING' });
+                            } else {
+                                console.log('[Client] User declined update');
+                            }
+                        }
+                    });
+                });
+
+                // Listen for messages from the service worker
+                navigator.serviceWorker.addEventListener('message', event => {
+                    if (event.data && event.data.type === 'NEW_VERSION_READY') {
+                        console.log(`[Client] New version ${event.data.version} is ready to be loaded`);
+                        if (confirm('A new version is ready! Would you like to reload the page?')) {
+                            console.log('[Client] User accepted reload, refreshing page');
+                            window.location.reload();
+                        } else {
+                            console.log('[Client] User declined reload');
+                        }
+                    }
+                });
+
                 // Wait for the service worker to be in the 'activated' state
                 if (serviceWorkerRegistration.active) {
                     isServiceWorkerReady = true;
@@ -144,17 +177,6 @@
                         }
                     });
                 }
-
-                // Handle updates
-                serviceWorkerRegistration.addEventListener('updatefound', () => {
-                    const newWorker = serviceWorkerRegistration.installing;
-                    newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            console.log('New version available!');
-                            // You could show a notification to the user here
-                        }
-                    });
-                });
 
             } catch (error) {
                 console.error('Service Worker registration failed:', error);

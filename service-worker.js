@@ -1,5 +1,5 @@
-const CACHE_NAME = 'quiz-app-v19';
-const APP_VERSION = '1.032';
+const CACHE_NAME = 'quiz-app-v21';
+const APP_VERSION = '1.034';
 const BASE_PATH = '';
 const ASSETS_TO_CACHE = [
     'index.html',
@@ -19,31 +19,52 @@ const ASSETS_TO_CACHE = [
 ];
 
 self.addEventListener('install', event => {
+    console.log(`[Service Worker] Installing new version ${APP_VERSION}`);
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('Opened cache');
+                console.log(`[Service Worker] Opened cache ${CACHE_NAME}`);
                 return cache.addAll(ASSETS_TO_CACHE);
             })
             .catch(error => {
-                console.error('Cache addAll failed:', error);
+                console.error('[Service Worker] Cache addAll failed:', error);
             })
     );
 });
 
 self.addEventListener('activate', event => {
+    console.log(`[Service Worker] Activating new version ${APP_VERSION}`);
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cacheName => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('Deleting old cache:', cacheName);
+                        console.log(`[Service Worker] Deleting old cache: ${cacheName}`);
                         return caches.delete(cacheName);
                     }
                 })
             );
+        }).then(() => {
+            // Notify all clients that a new version is ready
+            return self.clients.matchAll().then(clients => {
+                console.log(`[Service Worker] Notifying ${clients.length} clients about new version ${APP_VERSION}`);
+                clients.forEach(client => {
+                    client.postMessage({
+                        type: 'NEW_VERSION_READY',
+                        version: APP_VERSION
+                    });
+                });
+            });
         })
     );
+});
+
+// Listen for messages from clients
+self.addEventListener('message', event => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        console.log('[Service Worker] Received SKIP_WAITING message, activating new version');
+        self.skipWaiting();
+    }
 });
 
 self.addEventListener('fetch', event => {
