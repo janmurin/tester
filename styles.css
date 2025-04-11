@@ -170,6 +170,23 @@ body {
     opacity: 0.8;
 }
 
+.version-text.update-available {
+    animation: pulse 1s infinite;
+    color: #4285f4;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 .nav-items {
     display: flex;
     list-style: none;

@@ -1,5 +1,5 @@
-const CACHE_NAME = 'quiz-app-v21';
-const APP_VERSION = '1.034';
+const CACHE_NAME = 'quiz-app-v23';
+const APP_VERSION = '1.036';
 const BASE_PATH = '';
 const ASSETS_TO_CACHE = [
     'index.html',
@@ -74,26 +74,26 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request)
             .then(response => {
-                if (response) {
-                    return response;
-                }
-                
-                const fetchRequest = event.request.clone();
-                
-                return fetch(fetchRequest).then(response => {
-                    if (!response || response.status !== 200 || response.type !== 'basic') {
+                // Return cached response immediately
+                const fetchPromise = fetch(event.request)
+                    .then(networkResponse => {
+                        // Update cache with fresh response
+                        if (networkResponse && networkResponse.status === 200) {
+                            const responseToCache = networkResponse.clone();
+                            caches.open(CACHE_NAME)
+                                .then(cache => {
+                                    cache.put(event.request, responseToCache);
+                                });
+                        }
+                        return networkResponse;
+                    })
+                    .catch(() => {
+                        // Network request failed, continue with cached response
                         return response;
-                    }
-                    
-                    const responseToCache = response.clone();
-                    
-                    caches.open(CACHE_NAME)
-                        .then(cache => {
-                            cache.put(event.request, responseToCache);
-                        });
-                    
-                    return response;
-                });
+                    });
+
+                // Return cached response if available, otherwise wait for network
+                return response || fetchPromise;
             })
     );
 });

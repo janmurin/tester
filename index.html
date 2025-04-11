@@ -14,7 +14,7 @@
     <nav class="main-nav">
         <div class="nav-brand">
             <span class="app-name">PWA Quiz App</span>
-            <span class="version-text" id="version-display">v 1.034</span>
+            <span class="version-text" id="version-display">v 1.036</span>
         </div>
         <ul class="nav-items">
             <li><a href="#" class="nav-link active" data-section="training">Training</a></li>
@@ -164,6 +164,17 @@
                         }
                     }
                 });
+
+                // Check for updates on page load
+                if (serviceWorkerRegistration) {
+                    serviceWorkerRegistration.update()
+                        .then(() => {
+                            console.log('[Client] Checked for updates on page load');
+                        })
+                        .catch(error => {
+                            console.error('[Client] Failed to check for updates:', error);
+                        });
+                }
 
                 // Wait for the service worker to be in the 'activated' state
                 if (serviceWorkerRegistration.active) {
