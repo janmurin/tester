@@ -1,13 +1,16 @@
-const CACHE_NAME = 'quiz-app-v25';
-const APP_VERSION = '1.038';
+const CACHE_NAME = 'quiz-app-v26';
+const APP_VERSION = '1.039';
 const BASE_PATH = '';
-const ASSETS_TO_CACHE = [
+const CRITICAL_ASSETS = [
     'index.html',
     'styles.css',
     'quiz.js',
-    'questions.js',
     'config.js',
-    'manifest.json',
+    'manifest.json'
+];
+
+const SECONDARY_ASSETS = [
+    'questions.js',
     'icons/icon-72x72.png',
     'icons/icon-96x96.png',
     'icons/icon-128x128.png',
@@ -24,7 +27,23 @@ self.addEventListener('install', event => {
         caches.open(CACHE_NAME)
             .then(cache => {
                 console.log(`[Service Worker] Opened cache ${CACHE_NAME}`);
-                return cache.addAll(ASSETS_TO_CACHE);
+                // First cache critical assets
+                return cache.addAll(CRITICAL_ASSETS)
+                    .then(() => {
+                        console.log('[Service Worker] Critical assets cached');
+                        // Then cache secondary assets in the background
+                        return Promise.all(
+                            SECONDARY_ASSETS.map(asset => 
+                                fetch(asset)
+                                    .then(response => {
+                                        if (response && response.status === 200) {
+                                            return cache.put(asset, response);
+                                        }
+                                    })
+                                    .catch(() => {})
+                            )
+                        );
+                    });
             })
             .catch(error => {
                 console.error('[Service Worker] Cache addAll failed:', error);
@@ -74,26 +93,40 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request)
             .then(response => {
-                // Return cached response immediately
-                const fetchPromise = fetch(event.request)
-                    .then(networkResponse => {
-                        // Update cache with fresh response
-                        if (networkResponse && networkResponse.status === 200) {
-                            const responseToCache = networkResponse.clone();
-                            caches.open(CACHE_NAME)
-                                .then(cache => {
-                                    cache.put(event.request, responseToCache);
-                                });
-                        }
-                        return networkResponse;
-                    })
-                    .catch(() => {
-                        // Network request failed, continue with cached response
-                        return response;
-                    });
-
-                // Return cached response if available, otherwise wait for network
-                return response || fetchPromise;
+                // For critical assets, always try network first
+                if (CRITICAL_ASSETS.includes(new URL(event.request.url).pathname.split('/').pop())) {
+                    return fetch(event.request)
+                        .then(networkResponse => {
+                            if (networkResponse && networkResponse.status === 200) {
+                                const responseToCache = networkResponse.clone();
+                                caches.open(CACHE_NAME)
+                                    .then(cache => {
+                                        cache.put(event.request, responseToCache);
+                                    });
+                            }
+                            return networkResponse;
+                        })
+                        .catch(() => response);
+                }
+                
+                // For secondary assets, use cache-first strategy
+                if (response) {
+                    // Update cache in the background
+                    fetch(event.request)
+                        .then(networkResponse => {
+                            if (networkResponse && networkResponse.status === 200) {
+                                const responseToCache = networkResponse.clone();
+                                caches.open(CACHE_NAME)
+                                    .then(cache => {
+                                        cache.put(event.request, responseToCache);
+                                    });
+                            }
+                        })
+                        .catch(() => {});
+                    return response;
+                }
+                
+                return fetch(event.request);
             })
     );
 });

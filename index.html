@@ -14,7 +14,7 @@
     <nav class="main-nav">
         <div class="nav-brand">
             <span class="app-name">PWA Quiz App</span>
-            <span class="version-text" id="version-display">v 1.038</span>
+            <span class="version-text" id="version-display">v 1.039</span>
         </div>
         <ul class="nav-items">
             <li><a href="#" class="nav-link active" data-section="training">Training</a></li>
@@ -103,13 +103,35 @@
     </div>
 
     <script src="config.js"></script>
-    <script src="questions.js"></script>
     <script src="quiz.js?v=10"></script>
     <script>
         // Service Worker Registration
         let serviceWorkerRegistration = null;
         let isServiceWorkerReady = false;
         let isUpdateAvailable = false;
+        let questionsLoaded = false;
+
+        // Function to load questions asynchronously
+        const loadQuestions = async () => {
+            if (!questionsLoaded) {
+                try {
+                    const script = document.createElement('script');
+                    script.src = 'questions.js';
+                    script.async = true;
+                    script.onload = () => {
+                        console.log('[Client] Questions loaded successfully');
+                        questionsLoaded = true;
+                        // Initialize quiz after questions are loaded
+                        if (typeof initQuiz === 'function') {
+                            initQuiz();
+                        }
+                    };
+                    document.body.appendChild(script);
+                } catch (error) {
+                    console.error('[Client] Failed to load questions:', error);
+                }
+            }
+        };
 
         const registerServiceWorker = async () => {
             // Check if running from file protocol
@@ -194,9 +216,11 @@
             }
         };
 
-        // Register service worker before loading the app
+        // Register service worker and load questions after initial page load
         window.addEventListener('load', () => {
             registerServiceWorker();
+            // Load questions after a short delay to prioritize initial page render
+            setTimeout(loadQuestions, 100);
         });
 
         // Export the service worker state for use in other scripts
@@ -214,6 +238,20 @@
                         }
                     };
                     checkReady();
+                });
+            },
+            areQuestionsLoaded: () => questionsLoaded,
+            waitForQuestions: async () => {
+                if (questionsLoaded) return true;
+                return new Promise((resolve) => {
+                    const checkLoaded = () => {
+                        if (questionsLoaded) {
+                            resolve(true);
+                        } else {
+                            setTimeout(checkLoaded, 100);
+                        }
+                    };
+                    checkLoaded();
                 });
             }
         };
