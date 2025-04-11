@@ -438,8 +438,8 @@ body {
 /* Tablet styles */
 @media (min-width: 768px) {
     .score-rectangle {
-        width: 15px;
-        height: 15px;
+        width: 10px;
+        height: 10px;
     }
     
     #score-visualization {
@@ -451,8 +451,8 @@ body {
 /* Desktop styles */
 @media (min-width: 1024px) {
     .score-rectangle {
-        width: 20px;
-        height: 20px;
+        width: 10px;
+        height: 10px;
     }
     
     #score-visualization {
