@@ -86,12 +86,42 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
+/* Adjust gap for desktop screens */
+@media (min-width: 768px) {
+    #score-visualization {
+        gap: 3px;
+        padding: 8px;
+    }
+}
+
+@media (min-width: 1024px) {
+    #score-visualization {
+        gap: 4px;
+        padding: 10px;
+    }
+}
+
 .score-rectangle {
     width: 10px;
     height: 10px;
     background-color: #f0f0f0;
     border: 1px solid #ddd;
     flex-shrink: 0;
+}
+
+/* Make score rectangles larger on desktop screens */
+@media (min-width: 768px) {
+    .score-rectangle {
+        width: 15px;
+        height: 15px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .score-rectangle {
+        width: 20px;
+        height: 20px;
+    }
 }
 
 .score-rectangle.score-minus1 {
