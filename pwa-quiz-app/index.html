@@ -106,18 +106,84 @@
     <script src="questions.js"></script>
     <script src="quiz.js?v=10"></script>
     <script>
-        // Register service worker for PWA functionality
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(registration => {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.error('Service Worker registration failed:', error);
+        // Service Worker Registration
+        let serviceWorkerRegistration = null;
+        let isServiceWorkerReady = false;
+
+        const registerServiceWorker = async () => {
+            // Check if running from file protocol
+            if (window.location.protocol === 'file:') {
+                console.warn('Service workers are not supported when running from file:// protocol. Please use a local web server.');
+                return;
+            }
+
+            // Check if running from insecure protocol (not https or localhost)
+            if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                console.warn('Service workers require HTTPS or localhost. Please use a secure connection or local development server.');
+                return;
+            }
+
+            if (!('serviceWorker' in navigator)) {
+                console.warn('Service workers are not supported in this browser');
+                return;
+            }
+
+            try {
+                serviceWorkerRegistration = await navigator.serviceWorker.register('service-worker.js');
+                console.log('Service Worker registered with scope:', serviceWorkerRegistration.scope);
+
+                // Wait for the service worker to be in the 'activated' state
+                if (serviceWorkerRegistration.active) {
+                    isServiceWorkerReady = true;
+                    console.log('Service Worker is active and ready');
+                } else {
+                    serviceWorkerRegistration.addEventListener('statechange', (event) => {
+                        if (event.target.state === 'activated') {
+                            isServiceWorkerReady = true;
+                            console.log('Service Worker is now active and ready');
+                        }
                     });
-            });
-        }
+                }
+
+                // Handle updates
+                serviceWorkerRegistration.addEventListener('updatefound', () => {
+                    const newWorker = serviceWorkerRegistration.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            console.log('New version available!');
+                            // You could show a notification to the user here
+                        }
+                    });
+                });
+
+            } catch (error) {
+                console.error('Service Worker registration failed:', error);
+            }
+        };
+
+        // Register service worker before loading the app
+        window.addEventListener('load', () => {
+            registerServiceWorker();
+        });
+
+        // Export the service worker state for use in other scripts
+        window.appState = {
+            getServiceWorkerRegistration: () => serviceWorkerRegistration,
+            isServiceWorkerReady: () => isServiceWorkerReady,
+            waitForServiceWorker: async () => {
+                if (isServiceWorkerReady) return true;
+                return new Promise((resolve) => {
+                    const checkReady = () => {
+                        if (isServiceWorkerReady) {
+                            resolve(true);
+                        } else {
+                            setTimeout(checkReady, 100);
+                        }
+                    };
+                    checkReady();
+                });
+            }
+        };
     </script>
 </body>
 </html>

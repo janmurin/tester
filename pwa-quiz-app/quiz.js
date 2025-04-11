@@ -1,5 +1,27 @@
 const fetchAppVersion = async () => {
     try {
+        // Check if running from file protocol
+        if (window.location.protocol === 'file:') {
+            console.warn('Running from file protocol, using hardcoded version');
+            return;
+        }
+
+        // Wait for service worker to be ready if available
+        if (window.appState) {
+            try {
+                await window.appState.waitForServiceWorker();
+            } catch (error) {
+                console.warn('Service worker not available:', error);
+                return;
+            }
+        }
+
+        const registration = window.appState?.getServiceWorkerRegistration();
+        if (!registration) {
+            console.warn('Service worker registration not available');
+            return;
+        }
+
         const response = await fetch('service-worker.js');
         const text = await response.text();
         const versionMatch = text.match(/const APP_VERSION = ['"](.+)['"]/);
@@ -15,8 +37,8 @@ const fetchAppVersion = async () => {
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    fetchAppVersion();
+document.addEventListener('DOMContentLoaded', async () => {
+    await fetchAppVersion();
     
     const questionText = document.getElementById('question-text');
     const answersContainer = document.getElementById('answers-container');
