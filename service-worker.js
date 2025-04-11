@@ -1,5 +1,5 @@
 const CACHE_NAME = 'quiz-app-v28';
-const APP_VERSION = '1.043';
+const APP_VERSION = '1.044';
 const BASE_PATH = '';
 const CRITICAL_ASSETS = [
     'index.html',
@@ -49,6 +49,8 @@ self.addEventListener('install', event => {
                 console.error('[Service Worker] Cache addAll failed:', error);
             })
     );
+    // Automatically skip waiting to activate the new version
+    self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
@@ -76,14 +78,6 @@ self.addEventListener('activate', event => {
             });
         })
     );
-});
-
-// Listen for messages from clients
-self.addEventListener('message', event => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-        console.log('[Service Worker] Received SKIP_WAITING message, activating new version');
-        self.skipWaiting();
-    }
 });
 
 self.addEventListener('fetch', event => {

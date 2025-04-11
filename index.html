@@ -14,7 +14,7 @@
     <nav class="main-nav">
         <div class="nav-brand">
             <span class="app-name">PWA Quiz App</span>
-            <span class="version-text" id="version-display">v 1.043</span>
+            <span class="version-text" id="version-display">v 1.044</span>
         </div>
         <ul class="nav-items">
             <li><a href="#" class="nav-link active" data-section="training">Training</a></li>
@@ -141,13 +141,9 @@
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                             console.log('[Client] New version is ready to be activated');
                             isUpdateAvailable = true;
-                            // Show update notification
-                            if (confirm('A new version is available! Would you like to update?')) {
-                                console.log('[Client] User accepted update, sending SKIP_WAITING message');
-                                newWorker.postMessage({ type: 'SKIP_WAITING' });
-                            } else {
-                                console.log('[Client] User declined update');
-                            }
+                            // Automatically reload the page to activate the new version
+                            console.log('[Client] Automatically reloading to activate new version');
+                            window.location.reload();
                         }
                     });
                 });
@@ -156,12 +152,9 @@
                 navigator.serviceWorker.addEventListener('message', event => {
                     if (event.data && event.data.type === 'NEW_VERSION_READY') {
                         console.log(`[Client] New version ${event.data.version} is ready to be loaded`);
-                        if (confirm('A new version is ready! Would you like to reload the page?')) {
-                            console.log('[Client] User accepted reload, refreshing page');
-                            window.location.reload();
-                        } else {
-                            console.log('[Client] User declined reload');
-                        }
+                        // Automatically reload to activate the new version
+                        console.log('[Client] Automatically reloading to activate new version');
+                        window.location.reload();
                     }
                 });
 
