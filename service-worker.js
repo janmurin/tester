@@ -1,6 +1,6 @@
-const CACHE_NAME = 'quiz-app-v18';
-const APP_VERSION = '1.031';
-const BASE_PATH = '/tester/';
+const CACHE_NAME = 'quiz-app-v19';
+const APP_VERSION = '1.032';
+const BASE_PATH = '/';
 const ASSETS_TO_CACHE = [
     BASE_PATH,
     BASE_PATH + 'index.html',
