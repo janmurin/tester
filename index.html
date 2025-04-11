@@ -14,7 +14,7 @@
     <nav class="main-nav">
         <div class="nav-brand">
             <span class="app-name">PWA Quiz App</span>
-            <span class="version-text" id="version-display">v 1.041</span>
+            <span class="version-text" id="version-display">v 1.042</span>
         </div>
         <ul class="nav-items">
             <li><a href="#" class="nav-link active" data-section="training">Training</a></li>
@@ -103,7 +103,6 @@
     </div>
 
     <script src="config.js"></script>
-    <script src="quiz.js?v=10"></script>
     <script>
         // Service Worker Registration
         let serviceWorkerRegistration = null;
@@ -121,10 +120,13 @@
                     script.onload = () => {
                         console.log('[Client] Questions loaded successfully');
                         questionsLoaded = true;
-                        // Initialize quiz after questions are loaded
-                        if (typeof initQuiz === 'function') {
-                            initQuiz();
-                        }
+                        // Load quiz.js after questions are loaded
+                        const quizScript = document.createElement('script');
+                        quizScript.src = 'quiz.js?v=10';
+                        quizScript.onload = () => {
+                            console.log('[Client] Quiz initialized successfully');
+                        };
+                        document.body.appendChild(quizScript);
                     };
                     document.body.appendChild(script);
                 } catch (error) {
@@ -219,8 +221,8 @@
         // Register service worker and load questions after initial page load
         window.addEventListener('load', () => {
             registerServiceWorker();
-            // Load questions after a short delay to prioritize initial page render
-            setTimeout(loadQuestions, 100);
+            // Load questions immediately
+            loadQuestions();
         });
 
         // Export the service worker state for use in other scripts
