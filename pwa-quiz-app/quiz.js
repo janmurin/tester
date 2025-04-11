@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const testQuestionCountInput = document.getElementById('test-question-count');
     const testRangeErrorMessage = document.getElementById('test-range-error');
     
-    const ANALYTICS_URL = "https://script.google.com/macros/s/AKfycbx3Xb1_H5NwBf1qfJAWtLUHv7XCHMPE6mvNAM5HYawk9_HrCSDpBGJvrMVWgMv5Re6A/exec";
+    const ANALYTICS_URL = CONFIG.ANALYTICS_URL;
     
     const getDeviceId = () => {
         let deviceId = localStorage.getItem('deviceId');
@@ -59,17 +59,102 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const deviceId = getDeviceId();
     
-    const sendAnalyticsRequest = (questionId, score, isTest) => {
-        try {
-            const url = `${ANALYTICS_URL}?value=${deviceId}_questionID_${questionId}_score_${score}_isTest_${isTest}`;
-            fetch(url, { method: 'GET', mode: 'no-cors' })
-                .catch(error => {
-                    console.log('Analytics request failed silently:', error);
+    const sendAnalyticsRequest = async (questionId, score, isTest) => {
+        if (!CONFIG.ANALYTICS_ENABLED) {
+            console.log('Analytics is disabled');
+            return;
+        }
+
+        let retryCount = 0;
+        const maxRetries = CONFIG.ANALYTICS_RETRY_COUNT;
+
+        while (retryCount <= maxRetries) {
+            try {
+                const url = new URL(ANALYTICS_URL);
+                url.searchParams.append('value', `${deviceId}_questionID_${questionId}_score_${score}_isTest_${isTest}`);
+                
+                // Create a timeout promise
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error('Request timeout')), CONFIG.ANALYTICS_TIMEOUT);
                 });
-        } catch (error) {
-            console.log('Analytics request error caught silently:', error);
+
+                // Create the fetch promise
+                const fetchPromise = fetch(url.toString(), {
+                    method: 'GET',
+                    mode: 'no-cors', // Required for Google Apps Script
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    }
+                });
+
+                // Race between fetch and timeout
+                const response = await Promise.race([fetchPromise, timeoutPromise]);
+
+                // If we get here, the request was successful
+                console.log('Analytics data sent successfully');
+                return;
+
+            } catch (error) {
+                console.warn(`Analytics request attempt ${retryCount + 1} failed:`, error);
+                
+                if (retryCount === maxRetries) {
+                    // On final retry, store the failed request
+                    console.error('Analytics request failed after all retries:', error);
+                    const failedRequests = JSON.parse(localStorage.getItem('failedAnalyticsRequests') || '[]');
+                    failedRequests.push({
+                        questionId,
+                        score,
+                        isTest,
+                        timestamp: Date.now(),
+                        error: error.message
+                    });
+                    localStorage.setItem('failedAnalyticsRequests', JSON.stringify(failedRequests));
+                    return;
+                }
+
+                // Wait before retrying
+                await new Promise(resolve => setTimeout(resolve, CONFIG.ANALYTICS_RETRY_DELAY));
+                retryCount++;
+            }
         }
     };
+
+    // Function to retry failed analytics requests
+    const retryFailedAnalyticsRequests = async () => {
+        if (!CONFIG.ANALYTICS_ENABLED) return;
+
+        const failedRequests = JSON.parse(localStorage.getItem('failedAnalyticsRequests') || '[]');
+        if (failedRequests.length === 0) return;
+
+        const successfulRequests = [];
+        const remainingRequests = [];
+        
+        for (const request of failedRequests) {
+            try {
+                await sendAnalyticsRequest(request.questionId, request.score, request.isTest);
+                successfulRequests.push(request);
+            } catch (error) {
+                console.error('Retry failed for analytics request:', error);
+                remainingRequests.push(request);
+            }
+        }
+
+        // Update storage with remaining failed requests
+        localStorage.setItem('failedAnalyticsRequests', JSON.stringify(remainingRequests));
+
+        // Log results
+        if (successfulRequests.length > 0) {
+            console.log(`Successfully retried ${successfulRequests.length} analytics requests`);
+        }
+        if (remainingRequests.length > 0) {
+            console.log(`${remainingRequests.length} analytics requests still failed`);
+        }
+    };
+
+    // Retry failed requests when the app starts
+    document.addEventListener('DOMContentLoaded', () => {
+        retryFailedAnalyticsRequests();
+    });
     
     let currentQuestion = null;
     let selectedAnswers = [];
