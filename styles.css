@@ -396,3 +396,54 @@ body {
         margin: 5px 0;
     }
 }
+
+/* Mobile styles */
+@media screen and (max-width: 600px) {
+    .score-visualization-container {
+        padding: 5px;
+        margin-top: 8px;
+    }
+
+    .score-visualization-container h4 {
+        font-size: 0.8rem;
+        margin-bottom: 5px;
+    }
+
+    #score-visualization {
+        gap: 1px;
+        padding: 2px;
+    }
+
+    .score-rectangle {
+        width: 6px;
+        height: 6px;
+        border-width: 0.5px;
+    }
+}
+
+/* Small mobile devices */
+@media screen and (max-width: 400px) {
+    .score-rectangle {
+        width: 4px;
+        height: 4px;
+    }
+
+    #score-visualization {
+        gap: 0.5px;
+        padding: 1px;
+    }
+}
+
+/* Force mobile styles for testing */
+@media screen and (max-width: 9999px) {
+    .score-rectangle {
+        width: 6px;
+        height: 6px;
+        border-width: 0.5px;
+    }
+
+    #score-visualization {
+        gap: 1px;
+        padding: 2px;
+    }
+}
