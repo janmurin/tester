@@ -121,7 +121,11 @@ body {
 }
 
 .score-rectangle.in-range {
-    border: 1px solid black;
+    opacity: 1;
+}
+
+.score-rectangle:not(.in-range) {
+    opacity: 0.5;
 }
 
 /* Navigation styles */
