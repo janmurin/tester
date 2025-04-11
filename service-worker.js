@@ -1,16 +1,16 @@
 const CACHE_NAME = 'quiz-app-v28';
-const APP_VERSION = '1.042';
+const APP_VERSION = '1.043';
 const BASE_PATH = '';
 const CRITICAL_ASSETS = [
     'index.html',
     'styles.css',
     'quiz.js',
     'config.js',
-    'manifest.json'
+    'manifest.json',
+    'questions.js'
 ];
 
 const SECONDARY_ASSETS = [
-    'questions.js',
     'icons/icon-72x72.png',
     'icons/icon-96x96.png',
     'icons/icon-128x128.png',
