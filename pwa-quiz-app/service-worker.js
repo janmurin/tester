@@ -1,20 +1,22 @@
 const CACHE_NAME = 'quiz-app-v18';
 const APP_VERSION = '1.031';
+const BASE_PATH = '/pwa-quiz-app/';
 const ASSETS_TO_CACHE = [
-    '/',
-    '/index.html',
-    '/styles.css',
-    '/quiz.js',
-    '/questions.js',
-    '/manifest.json',
-    '/icons/icon-72x72.png',
-    '/icons/icon-96x96.png',
-    '/icons/icon-128x128.png',
-    '/icons/icon-144x144.png',
-    '/icons/icon-152x152.png',
-    '/icons/icon-192x192.png',
-    '/icons/icon-384x384.png',
-    '/icons/icon-512x512.png'
+    BASE_PATH,
+    BASE_PATH + 'index.html',
+    BASE_PATH + 'styles.css',
+    BASE_PATH + 'quiz.js',
+    BASE_PATH + 'questions.js',
+    BASE_PATH + 'config.js',
+    BASE_PATH + 'manifest.json',
+    BASE_PATH + 'icons/icon-72x72.png',
+    BASE_PATH + 'icons/icon-96x96.png',
+    BASE_PATH + 'icons/icon-128x128.png',
+    BASE_PATH + 'icons/icon-144x144.png',
+    BASE_PATH + 'icons/icon-152x152.png',
+    BASE_PATH + 'icons/icon-192x192.png',
+    BASE_PATH + 'icons/icon-384x384.png',
+    BASE_PATH + 'icons/icon-512x512.png'
 ];
 
 self.addEventListener('install', event => {
@@ -43,6 +45,12 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+    // Handle requests with the base path
+    const requestUrl = new URL(event.request.url);
+    if (!requestUrl.pathname.startsWith(BASE_PATH)) {
+        return;
+    }
+
     event.respondWith(
         caches.match(event.request)
             .then(response => {
