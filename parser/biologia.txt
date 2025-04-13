@@ -4669,7 +4669,7 @@ e) erytrocyty
 f) leukocyty
 g) močovinu
 h) NaCl, K^+, Na^+, Mg^2+, Ca^2+
-520.Súčast ou nefrónu je: 
+520.Súčastou nefrónu je: 
 a) prívodná tepnička
 b)	odvodná tepnička
 c)	glomerulus

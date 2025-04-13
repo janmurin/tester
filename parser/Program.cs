@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Linq;
 
 class Answer
 {
@@ -59,6 +60,9 @@ class Program
             ParseNewOrder(orderFilePath, questions);
             
             Console.WriteLine($"Successfully parsed {questions.Count} questions from {questionsFilePath}");
+            
+            // Check NewId uniqueness
+            CheckNewIdUniqueness(questions);
             
             // Print questions with different IDs
             PrintQuestionsWithDifferentIds(questions);
@@ -180,8 +184,8 @@ class Program
                         bestMatch = q;
                     }
                 }
-                
-                if (bestMatch != null)
+
+                if (bestMatch != null && Math.Abs(bestMatch.Text.Length - questionText.Length) < 10)
                 {
                     Console.WriteLine($"\nNo exact match found for question text: '{questionText}'");
                     Console.WriteLine($"Using best match (Question {bestMatch.Number}): '{bestMatch.Text}'");
@@ -289,5 +293,72 @@ class Program
         
         string json = JsonSerializer.Serialize(questions, options);
         File.WriteAllText(outputPath, json);
+    }
+
+    static void CheckNewIdUniqueness(List<Question> questions)
+    {
+        // Dictionary to track used NewIds and their questions
+        Dictionary<int, Question> usedIds = new Dictionary<int, Question>();
+        HashSet<int> missingIds = new HashSet<int>();
+        HashSet<int> duplicateIds = new HashSet<int>();
+        
+        // Check for duplicates and track used IDs
+        foreach (var question in questions)
+        {
+            if (question.NewId != 0)
+            {
+                if (usedIds.ContainsKey(question.NewId))
+                {
+                    duplicateIds.Add(question.NewId);
+                }
+                else
+                {
+                    usedIds[question.NewId] = question;
+                }
+            }
+        }
+        
+        // Check for missing IDs in range 1-1500
+        for (int i = 1; i <= 1500; i++)
+        {
+            if (!usedIds.ContainsKey(i))
+            {
+                missingIds.Add(i);
+            }
+        }
+        
+        // Print results
+        Console.WriteLine("\nNewId Validation Results:");
+        Console.WriteLine("-----------------------");
+        
+        if (duplicateIds.Count > 0)
+        {
+            Console.WriteLine("\nDuplicate NewIds found:");
+            foreach (int id in duplicateIds)
+            {
+                var questionsWithId = questions.Where(q => q.NewId == id).ToList();
+                Console.WriteLine($"\nNewId {id} is used by {questionsWithId.Count} questions:");
+                foreach (var q in questionsWithId)
+                {
+                    Console.WriteLine($"- Question {q.Number}: {q.Text}");
+                }
+            }
+        }
+        
+        if (missingIds.Count > 0)
+        {
+            Console.WriteLine($"\nMissing NewIds (total {missingIds.Count}):");
+            // Print first 10 missing IDs to avoid overwhelming output
+            Console.WriteLine(string.Join(", ", missingIds.Take(100)));
+            if (missingIds.Count > 100)
+            {
+                Console.WriteLine($"... and {missingIds.Count - 10} more");
+            }
+        }
+        
+        if (duplicateIds.Count == 0 && missingIds.Count == 0)
+        {
+            Console.WriteLine("All NewIds are unique and cover the range 1-1500 exactly once.");
+        }
     }
 } 
