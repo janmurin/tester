@@ -57,6 +57,9 @@ class Program
             
             // Check NewId uniqueness
             CheckNewIdUniqueness(questions);
+            questions = questions.OrderBy(q => q.NewId).ToList();
+            // questions.ForEach(x => x.Text = $"{x.NewId}. {x.Text}");
+            ExportToJson(questions, "output.json");
             
             // Print questions with different IDs
             //PrintQuestionsWithDifferentIds(questions);
