@@ -1,12 +1,10 @@
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Linq;
+using System.Text.RegularExpressions;
 
-class Answer
+namespace parser;
+
+internal class Answer
 {
     [JsonPropertyName("text")]
     public string Text { get; set; }
@@ -51,30 +49,39 @@ class Program
     {
         try
         {
-            string questionsFilePath = "biologia.txt";
-            string answersFilePath = "zaruceneSpravneOdpovede.txt";
-            string orderFilePath = "correctOrder.txt";
+            // Read questions from output.json
+            string json = File.ReadAllText("output.json");
+            List<Question> questions = JsonSerializer.Deserialize<List<Question>>(json);
             
-            List<Question> questions = ParseQuestions(questionsFilePath);
-            ParseCorrectAnswers(answersFilePath, questions);
-            ParseNewOrder(orderFilePath, questions);
-            
-            Console.WriteLine($"Successfully parsed {questions.Count} questions from {questionsFilePath}");
+            Console.WriteLine($"Successfully read {questions.Count} questions from output.json");
             
             // Check NewId uniqueness
             CheckNewIdUniqueness(questions);
             
             // Print questions with different IDs
-            PrintQuestionsWithDifferentIds(questions);
-            
-            // Export to JSON
-            ExportToJson(questions, "output.json");
-            Console.WriteLine("Questions exported to output.json");
+            //PrintQuestionsWithDifferentIds(questions);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
         }
+    }
+
+    private static void Parse()
+    {
+        string questionsFilePath = "biologia.txt";
+        string answersFilePath = "zaruceneSpravneOdpovede.txt";
+        string orderFilePath = "correctOrder.txt";
+            
+        List<Question> questions = ParseQuestions(questionsFilePath);
+        ParseCorrectAnswers(answersFilePath, questions);
+        ParseNewOrder(orderFilePath, questions);
+            
+        Console.WriteLine($"Successfully parsed {questions.Count} questions from {questionsFilePath}");
+            
+        // Export to JSON
+        ExportToJson(questions, "output.json");
+        Console.WriteLine("Questions exported to output.json");
     }
 
     static List<Question> ParseQuestions(string filePath)
@@ -96,6 +103,7 @@ class Program
                 currentQuestion = new Question();
                 string[] parts = line.Split(new[] { '.' }, 2);
                 currentQuestion.Number = int.Parse(parts[0]);
+                currentQuestion.NewId = int.Parse(parts[0]);
                 currentQuestion.Text = parts[1].Trim(); // do not Keep the number in the question text
             }
             // Check if line starts with a letter followed by a parenthesis (e.g., "a)")
@@ -340,7 +348,7 @@ class Program
                 Console.WriteLine($"\nNewId {id} is used by {questionsWithId.Count} questions:");
                 foreach (var q in questionsWithId)
                 {
-                    Console.WriteLine($"- Question {q.Number}: {q.Text}");
+                    Console.WriteLine($"- Question {q.Number}({q.NewId}): {q.Text}");
                 }
             }
         }
@@ -361,4 +369,4 @@ class Program
             Console.WriteLine("All NewIds are unique and cover the range 1-1500 exactly once.");
         }
     }
-} 
+}

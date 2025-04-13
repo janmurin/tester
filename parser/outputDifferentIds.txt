@@ -2,7 +2,7 @@ Questions with different IDs:
 ----------------------------
 Question 1 (New ID: 103): Podľa bunkovej teórie:
 Question 2 (New ID: 104): Prvú ucelenú evolučnú teóriu živých organizmov sformuloval:
-Question 3 (New ID: 1214): Ktoré tvrdenie je správne:
+Question 3 (New ID: 105): Ktoré tvrdenie je správne:
 Question 4 (New ID: 106): Bunkovú teóriu formulovali:
 Question 5 (New ID: 107): Základy novodobej anatómie ľudského tela položil:
 Question 6 (New ID: 108): Medzi fyziologické vedy patria:
@@ -11,7 +11,7 @@ Question 8 (New ID: 110): Dvojzávitnicovú štruktúru DNA a jej význam pre pr
 Question 9 (New ID: 111): Voda v bunkách má funkciu:
 Question 10 (New ID: 112): Monomérom bielkovín sú:
 Question 11 (New ID: 113): Jednotlivé aminokyseliny sú v bielkovinovom reťazci pospájané väzbou:
-Question 12 (New ID: 60): Bielkoviny majú funkciu:
+Question 12 (New ID: 114): Bielkoviny majú funkciu:
 Question 13 (New ID: 115): Monomérom nukleových kyselín sú:
 Question 14 (New ID: 116): Z chemického hľadiska sú nukleové kyseliny:
 Question 15 (New ID: 117): Lipidy:
@@ -19,9 +19,9 @@ Question 16 (New ID: 5): Za najmenší systém schopný samostatného života sa
 Question 17 (New ID: 10): Základom cytoplazmatickej membrány je:
 Question 18 (New ID: 11): K základným bunkovým povrchom eukaryotickej bunky patrí:
 Question 19 (New ID: 12): Cytoplazmatická membrána:
-Question 20 (New ID: 121): Vírusy sú:
+Question 20 (New ID: 6): Vírusy sú:
 Question 21 (New ID: 7): Podľa všeobecnej štruktúry rozlišujeme dva základné typy buniek:
-Question 22 (New ID: 78): Bunky určitého funkčného a štruktúrneho typu sa spájajú do:
+Question 22 (New ID: 9): Bunky určitého funkčného a štruktúrneho typu sa spájajú do:
 Question 23 (New ID: 8): Pravé indivíduá vyššieho rádu:
 Question 24 (New ID: 4): Cytológia sa zaoberá štúdiom:
 Question 25 (New ID: 35): Obsah vody v bunkách:
@@ -44,7 +44,7 @@ Question 41 (New ID: 27): Diktyozómy sú súčasťou:
 Question 42 (New ID: 17): Cytoskeletová sústava bunky:
 Question 43 (New ID: 28): Nukleolus:
 Question 44 (New ID: 29): Jadro eukaryotických buniek:
-Question 45 (New ID: 972): Prokaryotická bunka:
+Question 45 (New ID: 1): Prokaryotická bunka:
 Question 46 (New ID: 3): Ktoré štruktúry prokaryotickej bunky sú zodpovedné za uvoľňovanie energie:
 Question 47 (New ID: 30): Bunkové organely, ktorých základom sú biomembrány, nazývame:
 Question 48 (New ID: 31): Medzi membránové organely nepatria:
@@ -57,15 +57,16 @@ Question 54 (New ID: 69): V telofáze mitózy:
 Question 55 (New ID: 70): Cytokinéza:
 Question 56 (New ID: 71): Telové bunky živočíchov:
 Question 57 (New ID: 72): Bivalenty vznikajú:
-Question 58 (New ID: 1488): Označte správnu odpoveď:
+Question 58 (New ID: 73): Označte správnu odpoveď:
 Question 59 (New ID: 74): Zygota:
 Question 60 (New ID: 75): Karyokinéza je:
 Question 61 (New ID: 76): Bunkové delenie:
 Question 62 (New ID: 77): Počet chromozómov v dcérskych bunkách vzniknutých mitotickým delením je vzhľadom k materskej bunke (2n):
+Question 63 (New ID: 78): Bunky, ktoré vznikli meiózou:
 Question 64 (New ID: 79): Heterotypické delenie:
 Question 65 (New ID: 80): Redukčné delenie:
 Question 66 (New ID: 81): Homeotypické delenie:
-Question 67 (New ID: 1386): Proces postupného tvarového a funkčného odlíšenia buniek sa nazýva:
+Question 67 (New ID: 82): Proces postupného tvarového a funkčného odlíšenia buniek sa nazýva:
 Question 68 (New ID: 50): Bunkový cyklus:
 Question 69 (New ID: 51): Poradie fáz bunkového cyklu je nasledujúce:
 Question 70 (New ID: 52): Generačná doba bunky:
@@ -74,7 +75,8 @@ Question 72 (New ID: 55): Pri nedostatku živín v prostredí sa generačná dob
 Question 73 (New ID: 56): G_1 — fáza bunkového cyklu:
 Question 74 (New ID: 57): V G_1 — fáze:
 Question 75 (New ID: 58): Sesterské chromatidy:
-Question 76 (New ID: 1498): Označte nesprávnu odpoveď:
+Question 76 (New ID: 59): Označte nesprávnu odpoveď:
+Question 77 (New ID: 60): Bielkoviny, ktoré sa syntetizujú v G_1 — fáze sa využívajú najmä:
 Question 78 (New ID: 61): Kľúčovým procesom S — fázy je:
 Question 79 (New ID: 62): Karyokinéza a cytokinéza prebiehajú:
 Question 80 (New ID: 63): Do interfázy bunkového cyklu patrí:
@@ -84,7 +86,7 @@ Question 83 (New ID: 66): Stimulujúci účinok na bunkový cyklus:
 Question 84 (New ID: 83): Bunkové kultúry sa získavajú:
 Question 85 (New ID: 84): Bunková diferenciácia znamená:
 Question 86 (New ID: 85): Diferencovaná bunka:
-Question 87 (New ID: 30): Endocytóza:
+Question 87 (New ID: 36): Endocytóza:
 Question 88 (New ID: 37): Rastlinná bunka v hypertonickom prostredí:
 Question 89 (New ID: 40): Difúzia a osmóza majú spoločné to, že:
 Question 90 (New ID: 41): Bunkovou bariérou, ktorá selektívne prepúšťa potrebné látky do bunky a von z bunky, je:
@@ -116,9 +118,8 @@ Question 115 (New ID: 100): V rastlinných bunkách sa nenachádzajú:
 Question 116 (New ID: 101): Tonoplast:
 Question 117 (New ID: 102): V stróme chloroplastov sa nachádzajú:
 Question 118 (New ID: 120): Medzi nebunkové organizmy patria:
-Question 119 (New ID: 1342): Mikroorganizmy:
+Question 119 (New ID: 118): Mikroorganizmy:
 Question 120 (New ID: 119): Medzi prokaryota patria:
-Question 122 (New ID: 126): Vírusy spôsobujú u človeka:
 Question 135 (New ID: 137): Streptokoky vytvárajú:
 Question 136 (New ID: 138): Stafylokoky vytvárajú:
 Question 137 (New ID: 149): Patogénne baktérie:
@@ -130,20 +131,140 @@ Question 142 (New ID: 143): Medzi živočíšne vírusy patria:
 Question 143 (New ID: 135): Baktérie:
 Question 149 (New ID: 151): Ktorú z uvedených chorób nespôsobujú vírusy:
 Question 151 (New ID: 136): Kokovité baktérie:
-Question 357 (New ID: 649): Ktoré organické látky sú celkovo hmotnostne najviac zastúpené v krvnej plazme človeka?
-Question 420 (New ID: 1432): Označte správne odpovede:
-Question 514 (New ID: 515): Pečeň človeka:
-Question 540 (New ID: 590): Svaly, ktoré spôsobujú odtiahnutie, sa nazývajú:
-Question 546 (New ID: 572): Kĺbové plochy bedrového kĺbu pokrýva chrupka:
-Question 580 (New ID: 587): Kostra hornej končatiny človeka:
-Question 622 (New ID: 1463): Vyberte správne tvrdenia:
-Question 807 (New ID: 885): Označte správne tvrdenie:
-Question 922 (New ID: 951): Molekuly DNA sú tvorené:
-Question 961 (New ID: 963): Plazmidy:
-Question 1085 (New ID: 1086): Žena s recesívnou alelou pre hemofíliu čaká dieťa so zdravým mužom, aká je pravdepodobnosť, že sa jej narodí zdravý syn:
-Question 1120 (New ID: 1142): Mutácie sú:
-Question 1127 (New ID: 1150): Génové mutácie:
-Question 1143 (New ID: 1147): Indukované mutácie:
+Question 451 (New ID: 485): Celá tráviaca sústava človeka má tieto časti:
+Question 452 (New ID: 453): Ktoré zuby chýbajú v detskom chrupe:
+Question 453 (New ID: 454): Do ústnej dutiny ústia:
+Question 454 (New ID: 455): V ústnej dutine človeka:
+Question 455 (New ID: 456): Pôsobením žalúdkovej šťavy sa u ľudí štiepia:
+Question 456 (New ID: 457): Ktorá zložka žalúdkovej šťavy stabilizuje vitamíny skupiny B a vitamín C ?
+Question 457 (New ID: 458): Žalúdočná šťava obsahuje:
+Question 458 (New ID: 460): Úplný rozklad živín nastáva:
+Question 459 (New ID: 461): Ptyalín je enzým:
+Question 460 (New ID: 462): Chymozín je:
+Question 461 (New ID: 465): Hrubé črevo človeka sa začína:
+Question 462 (New ID: 466): Jemné výbežky sliznice tenkého čreva človeka umožňujúce lepšie vstrebávanie živín sú:
+Question 463 (New ID: 467): Hlavným miestom vstrebávania živín je:
+Question 464 (New ID: 468): Miestom trávenia bielkovín je:
+Question 465 (New ID: 469): Miestom trávenia tukov je:
+Question 466 (New ID: 470): Na trávení v tenkom čreve človeka sa v plnej miere zúčastňujú enzýmy:
+Question 467 (New ID: 463): Trypsín u človeka:
+Question 468 (New ID: 471): Pankreatická šťava obsahuje:
+Question 469 (New ID: 472): Ľudský pankreas:
+Question 470 (New ID: 475): Soli žlčových kyselín v tenkom čreve človeka:
+Question 471 (New ID: 476): Žlč sa u človeka tvorí v:
+Question 472 (New ID: 477): Hrubé črevo zdravého človeka:
+Question 473 (New ID: 478): K najčastejším funkčným poruchám tráviacej sústavy patrí:
+Question 474 (New ID: 479): Hrubé črevo dospelého človeka je dlhé asi:
+Question 475 (New ID: 480): V hrubom čreve človeka sa vstrebávajú:
+Question 476 (New ID: 464): Aké tráviace enzýmy vylučuje človek do hrubého čreva:
+Question 477 (New ID: 481): V hrubom čreve dospelého človeka normálne trvalo žijú:
+Question 478 (New ID: 482): Zvracanie:
+Question 479 (New ID: 483): Hrubá vláknina ľudskej potravy:
+Question 480 (New ID: 484): Vyberte správne tvrdenia o trávení človeka:
+Question 481 (New ID: 513): Nedostatok železa u človeka môže mať za následok:
+Question 482 (New ID: 507): Energeticky najbohatšou zložkou ľudskej potravy na jednotku hmotnosti sú:
+Question 483 (New ID: 506): Najbežnejším zdrojom energie z potravy pre organizmus človeka sú:
+Question 484 (New ID: 510): Optimálny denný prívod bielkovín vo výžive detí je:
+Question 485 (New ID: 511): Pre človeka nepostrádateľné (esenciálne) aminokyseliny:
+Question 486 (New ID: 512): 0 proteínoch vo výžive človeka platí, že:
+Question 487 (New ID: 514): Procesy, pri ktorých sa uvoľňuje energia:
+Question 488 (New ID: 515): Tuky z potravy človeka sú:
+Question 489 (New ID: 516): Tuky sú:
+Question 490 (New ID: 517): Optimálny denný prívod bielkovín vo výžive zdravého dospelého človeka je približne:
+Question 491 (New ID: 518): Pri úplnom hladovaní u človeka:
+Question 492 (New ID: 486): Nedostatok ktorého vitamínu nebol doposiaľ opísaný u človeka:
+Question 493 (New ID: 487): Medzi nevyhnutné stopové prvky patrí:
+Question 494 (New ID: 488): Ktoré tvrdenie z oblasti biológie človeka je správne:
+Question 495 (New ID: 489): Stav pri nedostatočnom prívode vitamínov sa všeobecne nazýva:
+Question 496 (New ID: 491): Akú funkciu má kyselina askorbová v ľudskom tele:
+Question 497 (New ID: 492): Vitamín A u človeka je:
+Question 498 (New ID: 493): Vitamín B_2 je:
+Question 499 (New ID: 494): Smrteľné ochorenie skorbut je spôsobené avitaminózou vitamínu:
+Question 500 (New ID: 490): Avitaminóza:
+Question 501 (New ID: 495): Ktorý z komplexu vitamínov B je dôležitý pre metabolizmus bielkovín:
+Question 502 (New ID: 496): Rohovatenie epitelov, šeroslepotu až slepotu spôsobuje nedostatok vitamínu:
+Question 503 (New ID: 497): Skupina vitamínov D_1— D_7 u človeka:
+Question 504 (New ID: 498): Mäknutie a rednutie kostí dospelých, krivica u detí a celkový nedostatok vápnika sú následkom nedostatku vitamínu:
+Question 505 (New ID: 499): Pri nedostatku ktorého vitamínu vzniká u človeka zhubná málokrvnosť:
+Question 506 (New ID: 500): Nedostatok vitamínu K spôsobuje u ľudí:
+Question 507 (New ID: 501): Medzi vitamíny rozpustné vo vode patria:
+Question 508 (New ID: 502): Medzi vitamíny rozpustné v tukoch patrí:
+Question 509 (New ID: 503): Nedostatok ktorého vitamínu zapríčiňuje u človeka smrteľnú chorobu beri-beri:
+Question 510 (New ID: 504): Typickým príznakom nedostatku vitamínu B_2 u človeka:
+Question 511 (New ID: 505): Ktorý vitamín podporuje činnosť pohlavných žliaz:
+Question 512 (New ID: 508): Zásobným pohotovostným zdrojom glukózy v organizme človeka je:
+Question 513 (New ID: 509): Pri cukrovke možno v moči zistiť najmä nadmernú prítomnosť:
+Question 514 (New ID: 474): Pečeň človeka:
+Question 515 (New ID: 473): Pečeň človeka:
+Question 516 (New ID: 459): Vrátnikový zvierač u človeka sa nachádza:
+Question 517 (New ID: 519): Obličky človeka sú umiestnené:
+Question 518 (New ID: 520): Obličky človeka produkujú:
+Question 519 (New ID: 533): Ktoré z uvedených látok nemá obsahovať moč zdravého človeka:
+Question 520 (New ID: 523): Súčastou nefrónu je:
+Question 521 (New ID: 524): Nefrón vyúsťuje do:
+Question 522 (New ID: 527): Močovina sa v ľudskom organizme tvorí v:
+Question 523 (New ID: 528): Filtrát vznikajúci v glomerule ľudskej obličky:
+Question 524 (New ID: 529): Primárny moč u človeka:
+Question 527 (New ID: 530): Pri prechode kanálikmi v obličkách človeka:
+Question 528 (New ID: 531): Tekutina, ktorá sa do Bowmanovho puzdra prefiltruje cez steny vlásočníc, sa nazýva:
+Question 529 (New ID: 532): Pri prechode primárneho moču cez stočené kanáliky a Henleho slučku:
+Question 530 (New ID: 534): Vylučovacia sústava človeka má za úlohu odstrániť z tela:
+Question 531 (New ID: 521): Obličky človeka:
+Question 532 (New ID: 535): Činnosť ľudských obličiek je riadená:
+Question 533 (New ID: 522): Základnou stavebnou a funkčnou jednotkou obličky je:
+Question 534 (New ID: 536): Stočené kanáliky I. a II. rádu sú spojené:
+Question 535 (New ID: 537): V nefróne sa tvorí moč v procese:
+Question 536 (New ID: 538): V ľudskom moči sa koncentrujú:
+Question 537 (New ID: 539): Umelá oblička je prístroj:
+Question 538 (New ID: 540): Chondrocyty sú:
+Question 539 (New ID: 541): Približne koľko kostí má kostra ľudského tela:
+Question 540 (New ID: 542): Svaly, ktoré spôsobujú odtiahnutie, sa nazývajú:
+Question 541 (New ID: 543): Podľa tvaru rozoznávame kosti:
+Question 542 (New ID: 544): Synergisty sú:
+Question 543 (New ID: 545): Najmohutnejšia a najdlhšia kosť v ľudskom tele je:
+Question 544 (New ID: 546): Najväčší a najzložitejší kĺb v kostre človeka je:
+Question 545 (New ID: 547): Vyber správne tvrdenia o kostiach človeka:
+Question 546 (New ID: 548): Kĺbové plochy bedrového kĺbu pokrýva chrupka:
+Question 547 (New ID: 549): Termínom epifýza označujeme:
+Question 548 (New ID: 551): Okostica u ľudí pokrýva:
+Question 549 (New ID: 550): Tenká väzivová blana na povrchu kosti:
+Question 550 (New ID: 552): Organická hmota ľudských kostí:
+Question 551 (New ID: 553): Rastová chrupka ľudských kostí:
+Question 552 (New ID: 554): Chrupkou sú v tele človeka spojené:
+Question 553 (New ID: 556): Dutiny dlhých ľudských kostí:
+Question 554 (New ID: 555): Hubovité kostné tkanivo sa u ľudí nachádza:
+Question 555 (New ID: 558): Na chrbtici človeka môžeme rozoznať:
+Question 556 (New ID: 559): Polohu lopatky pri rôznych pohyboch hornej končatiny zaisťuje:
+Question 557 (New ID: 560): Spojenie kostí v kostre človeka môže byť:
+Question 558 (New ID: 561): Príkladom chrupkového spojenia kostí je:
+Question 559 (New ID: 562): Príkladom spojenia kostí kostným tkanivom je:
+Question 560 (New ID: 451): Detský chrup má:
+Question 561 (New ID: 452): Vyvinutý mliečny chrup dieťaťa má:
+Question 562 (New ID: 563): Prvé dva krčné stavce človeka sú:
+Question 563 (New ID: 564): Počet krčných stavcov u človeka je:
+Question 564 (New ID: 567): Ktoré stavce v chrbtici človeka sú zrastené:
+Question 567 (New ID: 568): Kompletný hrudník človeka tvoria tieto kosti:
+Question 568 (New ID: 570): K hrudnej kosti človeka sa priamo pripája:
+Question 570 (New ID: 571): Panvová kosť dospelého človeka vznikla :
+Question 571 (New ID: 572): Rast kostí do dĺžky sa uskutočňuje:
+Question 572 (New ID: 573): Kĺbové plochy bedrového kĺbu pokrýva chrupka:
+Question 573 (New ID: 557): V ktorých kostiach dospelého človeka sa nachádza červená kostná dreň:
+Question 589 (New ID: 590): Kostrové svaly:
+Question 590 (New ID: 591): Svaly, ktoré spôsobujú pritiahnutie, sa nazývajú:
+Question 591 (New ID: 589): Počet svalov človeka je približne:
+Question 605 (New ID: 610): Dvojhlavý sval stehna:
+Question 606 (New ID: 605): Ktorý sval hornej končatiny človeka je ohýbač:
+Question 607 (New ID: 611): Najdlhším svalom v tele človeka je:
+Question 608 (New ID: 612): Štvorhlavý sval stehna človeka má vplyv na:
+Question 609 (New ID: 613): Ktorý sval sa upína Achillovou šľachou a výrazne sa uplatňuje pri chôdzi:
+Question 610 (New ID: 614): Ktoré významné zvierače ovládané vôľou patria medzi svaly panvy:
+Question 611 (New ID: 615): K svalom stehna patria:
+Question 612 (New ID: 616): Na hrboli pätovej kosti končí:
+Question 613 (New ID: 606): Ktorý sval sa zúčastňuje na zmenách polohy lopatky u človeka:
+Question 614 (New ID: 617): K svalom dolnej končatiny patrí:
+Question 615 (New ID: 607): Lichobežníkový sval:
+Question 616 (New ID: 608): Medzi svaly chrbta u človeka zaraďujeme:
+Question 617 (New ID: 609): K svalom hrudníka patria:
 Question 1180 (New ID: 1181): Panmixia je:
 Question 1181 (New ID: 1182): K procesom narúšajúcim genetickú rovnováhu v populácii patrí:
 Question 1182 (New ID: 1180): Populácia je v genetickej rovnováhe, ak:
@@ -151,35 +272,15 @@ Question 1199 (New ID: 1200): Ak sa v populácii vyskytuje jeden albinotický je
 Question 1200 (New ID: 1199): Ak sa v genofonde rovnovážnej panmiktickej populácie dominantná alela vyskytuje vo frekvencii 70 %, aké je v nej zastúpenie recesívnych homozygotov?
 Question 1201 (New ID: 1202): Aká je frekvencia dominantnej alely v populácii, ktorá má nasledovné genotypové zloženie - AA 49%, Aa 16 %, aa 35 % ?
 Question 1202 (New ID: 1201): Krvnoskupinový systém MN je determinovaný kodominantnými alelami I^M a I^N. Aké bude zastúpenie osôb s krvnou skupinou MN v populácii, v ktorej 36 % jedincov má krvnú skupinu N?
-Question 1251 (New ID: 1269): Sinice:
-Question 1252 (New ID: 1251): Označte správne zoradené (od najvyššej po najnižšiu) systematické jednotky:
-Question 1253 (New ID: 1270): Riasy sa rozmnožujú:
-Question 1254 (New ID: 1271): Červené riasy (Rhodophyta):
-Question 1255 (New ID: 1272): Gametofyt:
-Question 1257 (New ID: 1274): Červená očná škvrna:
-Question 1258 (New ID: 1275): Zelené riasy sa rozdeľujú na triedy:
-Question 1259 (New ID: 1276): Riasy:
-Question 1260 (New ID: 1277): Chary:
-Question 1261 (New ID: 1278): Pôvod vyšších rastlín sa odvodzuje od oddelenia:
-Question 1262 (New ID: 1279): Čo zabezpečuje siniciam modrozelené sfarbenie:
-Question 1263 (New ID: 1280): Pre sinice platí, že:
-Question 1264 (New ID: 1281): Rozsievky:
-Question 1265 (New ID: 1282): Pre jednobunkové riasy je typický typ stielky:
-Question 1266 (New ID: 1253): Pre huby platí, že:
-Question 1267 (New ID: 1254): Spleť hubových vlákien tvorí:
-Question 1268 (New ID: 1255): Plazmódium je stielka:
-Question 1269 (New ID: 1252): Bunka húb:
-Question 1270 (New ID: 1256): Medzi najznámejšie jedlé huby patria:
-Question 1271 (New ID: 1257): Penicillium notatum:
-Question 1272 (New ID: 1259): Hrdze patria medzi:
-Question 1273 (New ID: 1260): Námeľ je:
-Question 1274 (New ID: 1261): Kyjanička purpurová patrí k:
-Question 1275 (New ID: 1258): Penicilín bol vyrobený:
-Question 1278 (New ID: 1264): Nádorovky:
-Question 1279 (New ID: 1265): Ako huby spájavé sa označujú:
-Question 1280 (New ID: 1266): Kvasinky rodu Candida:
-Question 1281 (New ID: 1267): Kyjanička purpurová:
-Question 1282 (New ID: 1268): Na hnilobe ovocia sa podieľajú:
-Question 1285 (New ID: 1465): Označte nesprávne odpovede:
-Question 1405 (New ID: 1430): Správne tvrdenie je:
-Question 1412 (New ID: 1429): Kozmopolitné organizmy:
+Question 1218 (New ID: 1220): Príkladom znaku s autozómovo dominantným typom dedičnosti u človeka je:
+Question 1219 (New ID: 1221): Dedičná hemofília sa vyskytuje:
+Question 1220 (New ID: 1218): Galaktozémia:
+Question 1221 (New ID: 1219): Fenylketonúria je autozóvomovo recesívne podmienená porucha metabolizmu fenylalanínu. Môže sa narodiť aj zdravým rodičom postihnuté dieťa?
+Question 1228 (New ID: 1229): Označte správne priradené genotypy ku fenotypom pri krvnoskupinovom systéme AB0 u človeka (geno - fenotyp):
+Question 1229 (New ID: 1230): Ak majú traja súrodenci krvnú skupinu A, B, AB, ich rodičia môžu mať krvnú skupinu:
+Question 1230 (New ID: 1231): Ak majú obaja rodičia krvnú skupinu AB, ich deti môžu mať krvné skupiny:
+Question 1231 (New ID: 1232): Ak sú rodičia homozygotní pre krvné skupiny A a B, ich deti môžu mať krvnú skupinu:
+Question 1232 (New ID: 1233): Príkladom autozómovo recesívnej choroby u človeka je:
+Question 1233 (New ID: 1228): Dedičnosť krvnoskupinového systému AB0 je príkladom:
+Question 1248 (New ID: 1249): Génové inžinierstvo sa zaoberá:
+Question 1249 (New ID: 1248): Biotechnológie:
