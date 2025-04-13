@@ -2,12 +2,18 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 class Answer
 {
-    public char Key { get; set; }
+    [JsonPropertyName("text")]
     public string Text { get; set; }
+    
+    [JsonPropertyName("isCorrect")]
     public bool IsCorrect { get; set; }
+
+    public char Key { get; set; }
 
     public Answer(char key, string text)
     {
@@ -19,13 +25,18 @@ class Answer
 
 class Question
 {
+    [JsonPropertyName("Id")]
     public int Number { get; set; }
+    
+    [JsonPropertyName("question")]
     public string Text { get; set; }
-    public Dictionary<char, Answer> Answers { get; set; }
+    
+    [JsonPropertyName("answers")]
+    public List<Answer> Answers { get; set; }
 
     public Question()
     {
-        Answers = new Dictionary<char, Answer>();
+        Answers = new List<Answer>();
     }
 }
 
@@ -43,11 +54,12 @@ class Program
             
             Console.WriteLine($"Successfully parsed {questions.Count} questions from {questionsFilePath}");
             
-            // Example: Print first 5 questions with correct answers marked
-            for (int i = 0; i < Math.Min(5, questions.Count); i++)
-            {
-                PrintQuestion(questions[i]);
-            }
+            // Print first 5 questions
+            PrintQuestions(questions, 5);
+            
+            // Export to JSON
+            ExportToJson(questions, "output.json");
+            Console.WriteLine("Questions exported to output.json");
         }
         catch (Exception ex)
         {
@@ -74,7 +86,7 @@ class Program
                 currentQuestion = new Question();
                 string[] parts = line.Split(new[] { '.' }, 2);
                 currentQuestion.Number = int.Parse(parts[0]);
-                currentQuestion.Text = parts[1].Trim();
+                currentQuestion.Text = line.Trim(); // Keep the number in the question text
             }
             // Check if line starts with a letter followed by a parenthesis (e.g., "a)")
             else if (Regex.IsMatch(line, @"^[a-h]\)"))
@@ -84,7 +96,7 @@ class Program
                     string[] parts = line.Split(new[] { ')' }, 2);
                     char answerKey = parts[0][0];
                     string answerText = parts[1].Trim();
-                    currentQuestion.Answers[answerKey] = new Answer(answerKey, answerText);
+                    currentQuestion.Answers.Add(new Answer(answerKey, answerText));
                 }
             }
         }
@@ -117,21 +129,43 @@ class Program
             // Mark correct answers
             foreach (char correctAnswer in correctAnswers)
             {
-                if (question.Answers.ContainsKey(correctAnswer))
+                // Find the answer with matching key
+                Answer answer = question.Answers.Find(a => a.Key == correctAnswer);
+                if (answer != null)
                 {
-                    question.Answers[correctAnswer].IsCorrect = true;
+                    answer.IsCorrect = true;
                 }
             }
         }
     }
 
-    static void PrintQuestion(Question question)
+    static void PrintQuestions(List<Question> questions, int count)
     {
-        Console.WriteLine($"\nQuestion {question.Number}: {question.Text}");
-        foreach (var answer in question.Answers.Values)
+        Console.WriteLine("\nFirst {0} questions:", count);
+        Console.WriteLine("-------------------");
+        
+        for (int i = 0; i < Math.Min(count, questions.Count); i++)
         {
-            string correctIndicator = answer.IsCorrect ? "✓" : " ";
-            Console.WriteLine($"[{correctIndicator}] {answer.Key}) {answer.Text}");
+            Question question = questions[i];
+            Console.WriteLine($"\nQuestion {question.Number}: {question.Text}");
+            
+            foreach (var answer in question.Answers)
+            {
+                string correctIndicator = answer.IsCorrect ? "✓" : " ";
+                Console.WriteLine($"[{correctIndicator}] {answer.Key}) {answer.Text}");
+            }
         }
+    }
+
+    static void ExportToJson(List<Question> questions, string outputPath)
+    {
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
+        
+        string json = JsonSerializer.Serialize(questions, options);
+        File.WriteAllText(outputPath, json);
     }
 } 
