@@ -25,8 +25,11 @@ class Answer
 
 class Question
 {
-    [JsonPropertyName("Id")]
+    [JsonPropertyName("id")]
     public int Number { get; set; }
+    
+    [JsonPropertyName("newId")]
+    public int NewId { get; set; }
     
     [JsonPropertyName("question")]
     public string Text { get; set; }
@@ -37,6 +40,7 @@ class Question
     public Question()
     {
         Answers = new List<Answer>();
+        NewId = 0; // Default value indicating no new ID assigned
     }
 }
 
@@ -48,14 +52,16 @@ class Program
         {
             string questionsFilePath = "biologia.txt";
             string answersFilePath = "zaruceneSpravneOdpovede.txt";
+            string orderFilePath = "correctOrder.txt";
             
             List<Question> questions = ParseQuestions(questionsFilePath);
             ParseCorrectAnswers(answersFilePath, questions);
+            ParseNewOrder(orderFilePath, questions);
             
             Console.WriteLine($"Successfully parsed {questions.Count} questions from {questionsFilePath}");
             
-            // Print first 5 questions
-            PrintQuestions(questions, 5);
+            // Print questions with different IDs
+            PrintQuestionsWithDifferentIds(questions);
             
             // Export to JSON
             ExportToJson(questions, "output.json");
@@ -139,6 +145,33 @@ class Program
         }
     }
 
+    static void ParseNewOrder(string filePath, List<Question> questions)
+    {
+        string[] lines = File.ReadAllLines(filePath);
+        
+        foreach (string line in lines)
+        {
+            // Extract the question number and text from the line
+            // Format: Line      X:         "question": "Y. Question text",
+            Match match = Regex.Match(line, @"""question"": ""(\d+)\.\s*(.*?)""");
+            if (!match.Success) continue;
+            
+            int newId = int.Parse(match.Groups[1].Value);
+            string questionText = match.Groups[2].Value.Trim();
+            
+            // Find the question with matching text
+            Question question = questions.Find(q => q.Text.Contains(questionText));
+            if (question != null)
+            {
+                question.NewId = newId;
+            }
+            else
+            {
+                Console.WriteLine($"Error: Could not find question matching text: '{questionText}'");
+            }
+        }
+    }
+
     static void PrintQuestions(List<Question> questions, int count)
     {
         Console.WriteLine("\nFirst {0} questions:", count);
@@ -147,12 +180,26 @@ class Program
         for (int i = 0; i < Math.Min(count, questions.Count); i++)
         {
             Question question = questions[i];
-            Console.WriteLine($"\nQuestion {question.Number}: {question.Text}");
+            Console.WriteLine($"\nQuestion {question.Number} (New ID: {question.NewId}): {question.Text}");
             
             foreach (var answer in question.Answers)
             {
                 string correctIndicator = answer.IsCorrect ? "✓" : " ";
                 Console.WriteLine($"[{correctIndicator}] {answer.Key}) {answer.Text}");
+            }
+        }
+    }
+
+    static void PrintQuestionsWithDifferentIds(List<Question> questions)
+    {
+        Console.WriteLine("\nQuestions with different IDs:");
+        Console.WriteLine("----------------------------");
+        
+        foreach (var question in questions)
+        {
+            if (question.NewId != 0 && question.Number != question.NewId)
+            {
+                Console.WriteLine($"Question {question.Number} (New ID: {question.NewId}): {question.Text}");
             }
         }
     }
