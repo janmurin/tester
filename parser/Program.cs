@@ -92,7 +92,7 @@ class Program
                 currentQuestion = new Question();
                 string[] parts = line.Split(new[] { '.' }, 2);
                 currentQuestion.Number = int.Parse(parts[0]);
-                currentQuestion.Text = line.Trim(); // Keep the number in the question text
+                currentQuestion.Text = parts[1].Trim(); // do not Keep the number in the question text
             }
             // Check if line starts with a letter followed by a parenthesis (e.g., "a)")
             else if (Regex.IsMatch(line, @"^[a-h]\)"))
@@ -167,9 +167,80 @@ class Program
             }
             else
             {
-                Console.WriteLine($"Error: Could not find question matching text: '{questionText}'");
+                // Find the best matching question based on common characters
+                Question bestMatch = null;
+                int maxCommonChars = 0;
+                
+                foreach (var q in questions)
+                {
+                    int commonChars = CountCommonCharacters(q.Text, questionText);
+                    if (commonChars > maxCommonChars)
+                    {
+                        maxCommonChars = commonChars;
+                        bestMatch = q;
+                    }
+                }
+                
+                if (bestMatch != null)
+                {
+                    Console.WriteLine($"\nNo exact match found for question text: '{questionText}'");
+                    Console.WriteLine($"Using best match (Question {bestMatch.Number}): '{bestMatch.Text}'");
+                    Console.WriteLine($"Number of common characters: {maxCommonChars}");
+                    bestMatch.NewId = newId;
+                }
+                else
+                {
+                    Console.WriteLine($"Error: Could not find any matching question for text: '{questionText}'");
+                }
             }
         }
+    }
+
+    static int CountCommonCharacters(string str1, string str2)
+    {
+        // Convert to lowercase for case-insensitive comparison
+        str1 = str1.ToLower();
+        str2 = str2.ToLower();
+        
+        // Create character frequency maps
+        var freq1 = new Dictionary<char, int>();
+        var freq2 = new Dictionary<char, int>();
+        
+        // Count characters in first string
+        foreach (char c in str1)
+        {
+            if (char.IsLetterOrDigit(c))
+            {
+                if (freq1.ContainsKey(c))
+                    freq1[c]++;
+                else
+                    freq1[c] = 1;
+            }
+        }
+        
+        // Count characters in second string
+        foreach (char c in str2)
+        {
+            if (char.IsLetterOrDigit(c))
+            {
+                if (freq2.ContainsKey(c))
+                    freq2[c]++;
+                else
+                    freq2[c] = 1;
+            }
+        }
+        
+        // Count common characters
+        int commonCount = 0;
+        foreach (var kvp in freq1)
+        {
+            if (freq2.TryGetValue(kvp.Key, out int count2))
+            {
+                commonCount += Math.Min(kvp.Value, count2);
+            }
+        }
+        
+        return commonCount;
     }
 
     static void PrintQuestions(List<Question> questions, int count)
@@ -192,16 +263,20 @@ class Program
 
     static void PrintQuestionsWithDifferentIds(List<Question> questions)
     {
-        Console.WriteLine("\nQuestions with different IDs:");
-        Console.WriteLine("----------------------------");
-        
-        foreach (var question in questions)
+        using (StreamWriter writer = new StreamWriter("outputDifferentIds.txt"))
         {
-            if (question.NewId != 0 && question.Number != question.NewId)
+            writer.WriteLine("Questions with different IDs:");
+            writer.WriteLine("----------------------------");
+            
+            foreach (var question in questions)
             {
-                Console.WriteLine($"Question {question.Number} (New ID: {question.NewId}): {question.Text}");
+                if (question.NewId != 0 && question.Number != question.NewId)
+                {
+                    writer.WriteLine($"Question {question.Number} (New ID: {question.NewId}): {question.Text}");
+                }
             }
         }
+        Console.WriteLine("Questions with different IDs written to outputDifferentIds.txt");
     }
 
     static void ExportToJson(List<Question> questions, string outputPath)
