@@ -3,15 +3,29 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+class Answer
+{
+    public char Key { get; set; }
+    public string Text { get; set; }
+    public bool IsCorrect { get; set; }
+
+    public Answer(char key, string text)
+    {
+        Key = key;
+        Text = text;
+        IsCorrect = false;
+    }
+}
+
 class Question
 {
     public int Number { get; set; }
     public string Text { get; set; }
-    public Dictionary<char, string> Answers { get; set; }
+    public Dictionary<char, Answer> Answers { get; set; }
 
     public Question()
     {
-        Answers = new Dictionary<char, string>();
+        Answers = new Dictionary<char, Answer>();
     }
 }
 
@@ -21,12 +35,15 @@ class Program
     {
         try
         {
-            string filePath = "biologia.txt";
-            List<Question> questions = ParseQuestions(filePath);
+            string questionsFilePath = "biologia.txt";
+            string answersFilePath = "zaruceneSpravneOdpovede.txt";
             
-            Console.WriteLine($"Successfully parsed {questions.Count} questions from {filePath}");
+            List<Question> questions = ParseQuestions(questionsFilePath);
+            ParseCorrectAnswers(answersFilePath, questions);
             
-            // Example: Print first 5 questions
+            Console.WriteLine($"Successfully parsed {questions.Count} questions from {questionsFilePath}");
+            
+            // Example: Print first 5 questions with correct answers marked
             for (int i = 0; i < Math.Min(5, questions.Count); i++)
             {
                 PrintQuestion(questions[i]);
@@ -67,7 +84,7 @@ class Program
                     string[] parts = line.Split(new[] { ')' }, 2);
                     char answerKey = parts[0][0];
                     string answerText = parts[1].Trim();
-                    currentQuestion.Answers[answerKey] = answerText;
+                    currentQuestion.Answers[answerKey] = new Answer(answerKey, answerText);
                 }
             }
         }
@@ -81,12 +98,40 @@ class Program
         return questions;
     }
 
+    static void ParseCorrectAnswers(string filePath, List<Question> questions)
+    {
+        string[] lines = File.ReadAllLines(filePath);
+        
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split(':');
+            if (parts.Length != 2) continue;
+            
+            int questionNumber = int.Parse(parts[0]);
+            string correctAnswers = parts[1].Trim();
+            
+            // Find the question
+            Question question = questions.Find(q => q.Number == questionNumber);
+            if (question == null) continue;
+            
+            // Mark correct answers
+            foreach (char correctAnswer in correctAnswers)
+            {
+                if (question.Answers.ContainsKey(correctAnswer))
+                {
+                    question.Answers[correctAnswer].IsCorrect = true;
+                }
+            }
+        }
+    }
+
     static void PrintQuestion(Question question)
     {
         Console.WriteLine($"\nQuestion {question.Number}: {question.Text}");
-        foreach (var answer in question.Answers)
+        foreach (var answer in question.Answers.Values)
         {
-            Console.WriteLine($"{answer.Key}) {answer.Value}");
+            string correctIndicator = answer.IsCorrect ? "✓" : " ";
+            Console.WriteLine($"[{correctIndicator}] {answer.Key}) {answer.Text}");
         }
     }
 } 
