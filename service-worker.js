@@ -1,5 +1,5 @@
 const CACHE_NAME = 'quiz-app-v29';
-const APP_VERSION = '1.049';
+const APP_VERSION = '1.050';
 const BASE_PATH = '';
 const CRITICAL_ASSETS = [
     'index.html',
