@@ -226,7 +226,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     const updateStarIcon = (questionId) => {
         if (favoriteStar) {
-            favoriteStar.classList.toggle('favorite', favorites[questionId]);
+            favoriteStar.classList.remove('favorite');
+            if (favorites[questionId]) {
+                favoriteStar.classList.add('favorite');
+            }
         }
     };
     
