@@ -590,9 +590,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         return true;
     };
     
-    const areAllQuestionsInRangeMastered = () => {
-        for (let i = questionRange.start - 1; i < questionRange.end; i++) {
-            const questionId = quizQuestions[i].question;
+    const areAllQuestionsMastered = (questions) => {
+        for (const question of questions) {
+            const questionId = question.question;
             const score = getQuestionScore(questionId);
             if (score !== 3) {
                 return false;
@@ -607,58 +607,55 @@ document.addEventListener('DOMContentLoaded', async () => {
         nextBtn.classList.add('hidden');
         evaluateBtn.classList.remove('hidden');
         
-        const allMastered = areAllQuestionsInRangeMastered();
         const includeFavorites = document.getElementById('include-favorites').checked;
+        const availableQuestions = [];
         
-        if (allMastered) {
-            const rangeSize = questionRange.end - questionRange.start + 1;
-            const randomOffset = Math.floor(Math.random() * rangeSize);
-            const questionIndex = questionRange.start - 1 + randomOffset;
-            currentQuestion = quizQuestions[questionIndex];
-        } else {
-            const availableQuestions = [];
-            
-            // First, add questions from the current range
-            for (let i = questionRange.start - 1; i < questionRange.end; i++) {
-                const questionId = quizQuestions[i].question;
-                const score = getQuestionScore(questionId);
-                if (score !== 3) {
-                    availableQuestions.push({
-                        index: i,
-                        question: quizQuestions[i]
-                    });
-                }
+        // First, add questions from the current range
+        for (let i = questionRange.start - 1; i < questionRange.end; i++) {
+            const questionId = quizQuestions[i].question;
+            const score = getQuestionScore(questionId);
+            if (score !== 3) {
+                availableQuestions.push({
+                    index: i,
+                    question: quizQuestions[i]
+                });
             }
-            
-            // If includeFavorites is checked, add favorite questions from outside the range
-            if (includeFavorites) {
-                for (let i = 0; i < quizQuestions.length; i++) {
-                    const questionId = quizQuestions[i].question;
-                    // Skip questions that are already in the current range
-                    if (i < questionRange.start - 1 || i >= questionRange.end) {
-                        if (favorites[questionId]) {
-                            const score = getQuestionScore(questionId);
-                            if (score !== 3) {
-                                availableQuestions.push({
-                                    index: i,
-                                    question: quizQuestions[i]
-                                });
-                            }
+        }
+        
+        // If includeFavorites is checked, add favorite questions from outside the range
+        if (includeFavorites) {
+            for (let i = 0; i < quizQuestions.length; i++) {
+                const questionId = quizQuestions[i].question;
+                // Skip questions that are already in the current range
+                if (i < questionRange.start - 1 || i >= questionRange.end) {
+                    if (favorites[questionId]) {
+                        const score = getQuestionScore(questionId);
+                        if (score !== 3) {
+                            availableQuestions.push({
+                                index: i,
+                                question: quizQuestions[i]
+                            });
                         }
                     }
                 }
             }
-            
-            if (availableQuestions.length === 0) {
-                // If no questions are available, show a message
-                questionText.textContent = 'No questions available in the current range';
-                answersContainer.innerHTML = '';
-                return;
-            }
-            
+        }
+        
+        if (availableQuestions.length === 0) {
+            // If no questions are available, show a message
+            questionText.textContent = 'No questions available in the current range';
+            answersContainer.innerHTML = '';
+            return;
+        }
+        
+        const allMastered = areAllQuestionsMastered(availableQuestions);
+        
+        if (allMastered) {
             const randomIndex = Math.floor(Math.random() * availableQuestions.length);
-            const selectedQuestion = availableQuestions[randomIndex];
-            currentQuestion = selectedQuestion.question;
+            currentQuestion = availableQuestions[randomIndex].question;
+        } else {
+            const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+            currentQuestion = availableQuestions[randomIndex].question;
         }
         
         const questionId = currentQuestion.question;
