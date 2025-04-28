@@ -561,8 +561,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         answersContainer.innerHTML = '';
         
+        // Use 4 or 8 answers based on checkbox
+        let numAnswers = 4;
+        const use8AnswersCheckbox = document.getElementById('use-8-answers');
+        if (use8AnswersCheckbox && use8AnswersCheckbox.checked) {
+            numAnswers = 8;
+        }
         const allAnswers = [...currentQuestion.answers];
-        const shuffledAnswers = shuffleArray(allAnswers);
+        const shuffledAnswers = shuffleArray(allAnswers).slice(0, numAnswers);
         
         shuffledAnswers.forEach((answer, index) => {
             const answerElement = document.createElement('div');
@@ -683,4 +689,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
     };
+
+    // Add this event listener to reload a question when the checkbox is toggled
+    const use8AnswersCheckbox = document.getElementById('use-8-answers');
+    if (use8AnswersCheckbox) {
+        use8AnswersCheckbox.addEventListener('change', () => {
+            loadRandomQuestion();
+        });
+    }
 });
