@@ -562,7 +562,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         answersContainer.innerHTML = '';
         
         const allAnswers = [...currentQuestion.answers];
-        const shuffledAnswers = shuffleArray(allAnswers).slice(0, 4);
+        const shuffledAnswers = shuffleArray(allAnswers);
         
         shuffledAnswers.forEach((answer, index) => {
             const answerElement = document.createElement('div');
