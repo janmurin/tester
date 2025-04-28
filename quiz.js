@@ -307,9 +307,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             // Add click handler to load the specific question
             rectangle.addEventListener('click', () => {
-                if (questionIndex >= questionRange.start && questionIndex <= questionRange.end) {
-                    loadSpecificQuestion(questionIndex);
+                // If we're in the middle of evaluation, reset the state
+                if (!evaluateBtn.classList.contains('hidden')) {
+                    selectedAnswers = [];
+                    answersContainer.innerHTML = '';
+                    evaluateBtn.classList.add('hidden');
+                    nextBtn.classList.add('hidden');
                 }
+                
+                loadSpecificQuestion(questionIndex);
             });
             
             scoreVisualization.appendChild(rectangle);
