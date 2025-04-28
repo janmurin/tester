@@ -14,7 +14,7 @@
     <nav class="main-nav">
         <div class="nav-brand">
             <span class="app-name">PWA Quiz App</span>
-            <span class="version-text" id="version-display">v 1.053</span>
+            <span class="version-text" id="version-display">v 1.054</span>
         </div>
         <ul class="nav-items">
             <li><a href="#" class="nav-link active" data-section="training">Training</a></li>
@@ -37,18 +37,20 @@
                             <input type="number" id="end-index" min="1">
                         </div>
                     </div>
-                    <div class="settings-group">
-                        <label class="toggle-label">
-                            <input type="checkbox" id="use-8-answers">
-                            <span class="toggle-slider"></span>
-                            Use 8 Answers
-                        </label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="use-8-answers">
+                        <label for="use-8-answers">Use 8 answers</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="include-favorites">
+                        <label for="include-favorites">Include favorites</label>
                     </div>
                     <p id="range-error" class="error-message hidden"></p>
                 </div>
 
                 <div class="quiz-container">
                     <div id="question-container">
+                        <div id="favorite-star" class="star-icon"></div>
                         <h2 id="question-text">Question will appear here</h2>
                     </div>
 

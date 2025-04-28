@@ -93,6 +93,7 @@ body {
     background-color: #f0f0f0;
     border: 1px solid #ddd;
     flex-shrink: 0;
+    position: relative;
 }
 
 .score-rectangle.score-minus1 {
@@ -126,6 +127,13 @@ body {
 
 .score-rectangle:not(.in-range) {
     opacity: 0.5;
+}
+
+.score-rectangle.favorite {
+    border-width: 2px;
+    border-style: solid;
+    border-color: #4285f4;
+    box-shadow: 0 0 0 1px rgba(66, 133, 244, 0.3);
 }
 
 /* Navigation styles */
@@ -205,6 +213,11 @@ body {
 }
 
 #question-container {
+    position: relative;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
@@ -482,4 +495,23 @@ body {
         width: 6px;
         height: 6px;
     }
+}
+
+.star-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.star-icon.favorite {
+    opacity: 1;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>');
 }

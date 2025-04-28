@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const answersContainer = document.getElementById('answers-container');
     const evaluateBtn = document.getElementById('evaluate-btn');
     const nextBtn = document.getElementById('next-btn');
+    const favoriteStar = document.getElementById('favorite-star');
     
     const testQuestionText = document.getElementById('test-question-text');
     const testAnswersContainer = document.getElementById('test-answers-container');
@@ -206,6 +207,71 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderScoreVisualization();
     };
     
+    let favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
+    
+    const saveFavorites = () => {
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+    };
+    
+    const toggleFavorite = (questionId) => {
+        if (favorites[questionId]) {
+            delete favorites[questionId];
+        } else {
+            favorites[questionId] = true;
+        }
+        saveFavorites();
+        updateStarIcon(questionId);
+        renderScoreVisualization();
+    };
+    
+    const updateStarIcon = (questionId) => {
+        if (favoriteStar) {
+            favoriteStar.classList.toggle('favorite', favorites[questionId]);
+        }
+    };
+    
+    const loadSpecificQuestion = (questionIndex) => {
+        selectedAnswers = [];
+        
+        nextBtn.classList.add('hidden');
+        evaluateBtn.classList.remove('hidden');
+        
+        currentQuestion = quizQuestions[questionIndex - 1]; // Convert to 0-based index
+        
+        const questionId = currentQuestion.question;
+        const score = getQuestionScore(questionId);
+        
+        questionText.innerHTML = `<span class="question-score">Score: ${score}</span> ${currentQuestion.question}`;
+        
+        // Update star icon based on favorite status
+        updateStarIcon(questionId);
+        
+        answersContainer.innerHTML = '';
+        
+        // Use 4 or 8 answers based on checkbox
+        let numAnswers = 4;
+        const use8AnswersCheckbox = document.getElementById('use-8-answers');
+        if (use8AnswersCheckbox && use8AnswersCheckbox.checked) {
+            numAnswers = 8;
+        }
+        const allAnswers = [...currentQuestion.answers];
+        const shuffledAnswers = shuffleArray(allAnswers).slice(0, numAnswers);
+        
+        shuffledAnswers.forEach((answer, index) => {
+            const answerElement = document.createElement('div');
+            answerElement.classList.add('answer-option');
+            answerElement.dataset.index = index;
+            answerElement.dataset.isCorrect = answer.isCorrect;
+            answerElement.textContent = answer.text;
+            
+            answerElement.addEventListener('click', () => {
+                toggleAnswerSelection(answerElement, index, answer);
+            });
+            
+            answersContainer.appendChild(answerElement);
+        });
+    };
+    
     const renderScoreVisualization = () => {
         if (!scoreVisualization) return;
         
@@ -229,7 +295,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 rectangle.classList.add('in-range');
             }
             
+            // Add favorite class if the question is favorited
+            if (favorites[questionId]) {
+                rectangle.classList.add('favorite');
+            }
+            
             rectangle.title = `Question ${questionIndex}: Score ${score}`;
+            
+            // Add click handler to load the specific question
+            rectangle.addEventListener('click', () => {
+                if (questionIndex >= questionRange.start && questionIndex <= questionRange.end) {
+                    loadSpecificQuestion(questionIndex);
+                }
+            });
             
             scoreVisualization.appendChild(rectangle);
         }
@@ -530,14 +608,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         evaluateBtn.classList.remove('hidden');
         
         const allMastered = areAllQuestionsInRangeMastered();
+        const includeFavorites = document.getElementById('include-favorites').checked;
         
         if (allMastered) {
             const rangeSize = questionRange.end - questionRange.start + 1;
             const randomOffset = Math.floor(Math.random() * rangeSize);
-            const questionIndex = questionRange.start - 1 + randomOffset; // Adjust for 0-based array index
+            const questionIndex = questionRange.start - 1 + randomOffset;
             currentQuestion = quizQuestions[questionIndex];
         } else {
             const availableQuestions = [];
+            
+            // First, add questions from the current range
             for (let i = questionRange.start - 1; i < questionRange.end; i++) {
                 const questionId = quizQuestions[i].question;
                 const score = getQuestionScore(questionId);
@@ -549,6 +630,32 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
             
+            // If includeFavorites is checked, add favorite questions from outside the range
+            if (includeFavorites) {
+                for (let i = 0; i < quizQuestions.length; i++) {
+                    const questionId = quizQuestions[i].question;
+                    // Skip questions that are already in the current range
+                    if (i < questionRange.start - 1 || i >= questionRange.end) {
+                        if (favorites[questionId]) {
+                            const score = getQuestionScore(questionId);
+                            if (score !== 3) {
+                                availableQuestions.push({
+                                    index: i,
+                                    question: quizQuestions[i]
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (availableQuestions.length === 0) {
+                // If no questions are available, show a message
+                questionText.textContent = 'No questions available in the current range';
+                answersContainer.innerHTML = '';
+                return;
+            }
+            
             const randomIndex = Math.floor(Math.random() * availableQuestions.length);
             const selectedQuestion = availableQuestions[randomIndex];
             currentQuestion = selectedQuestion.question;
@@ -558,6 +665,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const score = getQuestionScore(questionId);
         
         questionText.innerHTML = `<span class="question-score">Score: ${score}</span> ${currentQuestion.question}`;
+        
+        // Update star icon based on favorite status
+        updateStarIcon(questionId);
         
         answersContainer.innerHTML = '';
         
@@ -695,6 +805,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (use8AnswersCheckbox) {
         use8AnswersCheckbox.addEventListener('change', () => {
             loadRandomQuestion();
+        });
+    }
+
+    // Add click handler for the star icon
+    if (favoriteStar) {
+        favoriteStar.addEventListener('click', () => {
+            if (currentQuestion) {
+                toggleFavorite(currentQuestion.question);
+            }
         });
     }
 });
