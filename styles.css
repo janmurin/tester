@@ -65,6 +65,36 @@ body {
     margin-top: 5px;
 }
 
+.radio-group {
+    margin: 15px 0;
+}
+
+.radio-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.radio-options {
+    display: flex;
+    gap: 15px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.radio-option input[type="radio"] {
+    margin: 0;
+}
+
+.radio-option label {
+    margin: 0;
+    font-weight: normal;
+}
+
 .score-visualization-container {
     margin-top: 20px;
 }

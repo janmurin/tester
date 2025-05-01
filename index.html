@@ -14,7 +14,7 @@
     <nav class="main-nav">
         <div class="nav-brand">
             <span class="app-name">PWA Quiz App</span>
-            <span class="version-text" id="version-display">v 1.055</span>
+            <span class="version-text" id="version-display">v 1.056</span>
         </div>
         <ul class="nav-items">
             <li><a href="#" class="nav-link active" data-section="training">Training</a></li>
@@ -44,6 +44,23 @@
                     <div class="checkbox-group">
                         <input type="checkbox" id="include-favorites">
                         <label for="include-favorites">Include favorites</label>
+                    </div>
+                    <div class="radio-group">
+                        <label>Minimum score to skip:</label>
+                        <div class="radio-options">
+                            <div class="radio-option">
+                                <input type="radio" id="score-3" name="skip-score" value="3" checked>
+                                <label for="score-3">3</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="score-2" name="skip-score" value="2">
+                                <label for="score-2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="score-1" name="skip-score" value="1">
+                                <label for="score-1">1</label>
+                            </div>
+                        </div>
                     </div>
                     <p id="range-error" class="error-message hidden"></p>
                 </div>
@@ -114,7 +131,7 @@
 
     <script src="config.js"></script>
     <script src="questions.js"></script>
-    <script src="quiz.js?v=10"></script>
+    <script src="quiz.js?v=11"></script>
     <script>
         // Service Worker Registration
         let serviceWorkerRegistration = null;

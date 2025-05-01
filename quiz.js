@@ -618,12 +618,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         const includeFavorites = document.getElementById('include-favorites').checked;
         const availableQuestions = [];
+        const skipScore = parseInt(document.querySelector('input[name="skip-score"]:checked').value);
         
         // First, add questions from the current range
         for (let i = questionRange.start - 1; i < questionRange.end; i++) {
             const questionId = quizQuestions[i].question;
             const score = getQuestionScore(questionId);
-            if (score !== 3) {
+            if (score < skipScore) {
                 availableQuestions.push({
                     index: i,
                     question: quizQuestions[i]
@@ -639,7 +640,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (i < questionRange.start - 1 || i >= questionRange.end) {
                     if (favorites[questionId]) {
                         const score = getQuestionScore(questionId);
-                        if (score !== 3) {
+                        if (score < skipScore) {
                             availableQuestions.push({
                                 index: i,
                                 question: quizQuestions[i]
