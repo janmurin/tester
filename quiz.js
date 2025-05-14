@@ -495,11 +495,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (incorrectCount === 0) {
             pointsEarned = 4;
         } else if (incorrectCount === 1) {
-            pointsEarned = 3;
-        } else if (incorrectCount === 2) {
             pointsEarned = 2;
+        } else if (incorrectCount === 2) {
+            pointsEarned = 0;
         } else if (incorrectCount === 3) {
-            pointsEarned = 1;
+            pointsEarned = -2;
+        } else if (incorrectCount === 4) {
+            pointsEarned = -4;
         }
         
         testScore += pointsEarned;
