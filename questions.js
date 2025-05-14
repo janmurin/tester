@@ -38222,12 +38222,12 @@ const quizQuestions = [
         },
         {
           "text": "folikuly stimulujúci",
-          "isCorrect": false,
+          "isCorrect": true,
           "Key": "b"
         },
         {
           "text": "luteinizačný",
-          "isCorrect": true,
+          "isCorrect": false,
           "Key": "c"
         },
         {
@@ -43720,12 +43720,12 @@ const quizQuestions = [
           "Key": "a"
         },
         {
-          "text": "TAC alebo TCA",
+          "text": "ATG alebo AGT",
           "isCorrect": false,
           "Key": "b"
         },
         {
-          "text": "TAC",
+          "text": "ATG",
           "isCorrect": true,
           "Key": "c"
         },
@@ -43735,7 +43735,7 @@ const quizQuestions = [
           "Key": "d"
         },
         {
-          "text": "TAG",
+          "text": "ATC",
           "isCorrect": false,
           "Key": "e"
         },
@@ -43750,7 +43750,7 @@ const quizQuestions = [
           "Key": "g"
         },
         {
-          "text": "ATC",
+          "text": "ATA",
           "isCorrect": false,
           "Key": "h"
         }
@@ -43762,27 +43762,27 @@ const quizQuestions = [
       "question": "932. Koniec génu v jadrovej DNA je vymedzený tripletmi:",
       "answers": [
         {
-          "text": "ATT, ATA, ACT",
+          "text": "TAA, TAT, TGA",
           "isCorrect": false,
           "Key": "a"
         },
         {
-          "text": "ATT, ATC, ACT",
+          "text": "TAA, TAG, TGA",
           "isCorrect": true,
           "Key": "b"
         },
         {
-          "text": "AAT, ATC, ATT",
+          "text": "TTA, TAG, TAA",
           "isCorrect": false,
           "Key": "c"
         },
         {
-          "text": "ATA, ATC, ACT",
+          "text": "TAT, TAG, TGA",
           "isCorrect": false,
           "Key": "d"
         },
         {
-          "text": "ACT, ATC, ATG",
+          "text": "TCA, TAG, TAC",
           "isCorrect": false,
           "Key": "e"
         },
@@ -45370,7 +45370,7 @@ const quizQuestions = [
           "Key": "b"
         },
         {
-          "text": "sú dôležité len pre špecifické životné podmienky",
+          "text": "sú dôležité pre baktérie v špecifických životných podmienkach",
           "isCorrect": true,
           "Key": "c"
         },
@@ -45385,7 +45385,7 @@ const quizQuestions = [
           "Key": "e"
         },
         {
-          "text": "nie sú alelické",
+          "text": "môžu zabezpečovať rezistenciu baktérií voči antibiotikám",
           "isCorrect": true,
           "Key": "f"
         },
@@ -52435,8 +52435,8 @@ const quizQuestions = [
           "Key": "e"
         },
         {
-          "text": "v balcteriálnych bunkách DNA plazmidov",
-          "isCorrect": true,
+          "text": "DNA plazmidov v bakteriálnych bunkách",
+          "isCorrect": false,
           "Key": "f"
         },
         {
@@ -58564,7 +58564,7 @@ const quizQuestions = [
     {
       "id": 1247,
       "newId": 1247,
-      "question": "1247. vo zvýšenej pravdepodobnosti genetického poškodenia dieťaťa",
+      "question": "1247. Genetické poradenstvo",
       "answers": [
         {
           "text": "má za cieľ liečiť dedičné ochorenia",
@@ -60885,7 +60885,7 @@ const quizQuestions = [
           "Key": "c"
         },
         {
-          "text": "nie sú schopné autotrofie",
+          "text": "môžu mať fungicídne účinky",
           "isCorrect": true,
           "Key": "d"
         },
