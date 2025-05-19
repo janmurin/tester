@@ -9688,7 +9688,7 @@ const quizQuestions = [
       "answers": [
         {
           "text": "fykoerytrín",
-          "isCorrect": false,
+          "isCorrect": true,
           "Key": "a"
         },
         {
@@ -9718,7 +9718,7 @@ const quizQuestions = [
         },
         {
           "text": "červené fykobilíny",
-          "isCorrect": false,
+          "isCorrect": true,
           "Key": "g"
         },
         {
@@ -22801,7 +22801,7 @@ const quizQuestions = [
       "answers": [
         {
           "text": "B 5",
-          "isCorrect": true,
+          "isCorrect": false,
           "Key": "a"
         },
         {
@@ -22821,7 +22821,7 @@ const quizQuestions = [
         },
         {
           "text": "kyseliny pantoténovej",
-          "isCorrect": true,
+          "isCorrect": false,
           "Key": "e"
         },
         {
@@ -23239,7 +23239,7 @@ const quizQuestions = [
         },
         {
           "text": "B_9",
-          "isCorrect": false,
+          "isCorrect": true,
           "Key": "d"
         },
         {
@@ -23259,7 +23259,7 @@ const quizQuestions = [
         },
         {
           "text": "kyselina folová",
-          "isCorrect": false,
+          "isCorrect": true,
           "Key": "h"
         }
       ]
