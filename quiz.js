@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const testEndIndexInput = document.getElementById('test-end-index');
     const testQuestionCountInput = document.getElementById('test-question-count');
     const testRangeErrorMessage = document.getElementById('test-range-error');
+    const testOnlyFavoritesCheckbox = document.getElementById('test-only-favorites');
     
     const ANALYTICS_URL = CONFIG.ANALYTICS_URL;
     
@@ -346,11 +347,53 @@ document.addEventListener('DOMContentLoaded', async () => {
         return currentScore;
     };
     
+    const updateTestQuestionCount = () => {
+        console.log('updateTestQuestionCount called');
+        const startValue = parseInt(testStartIndexInput.value);
+        const endValue = parseInt(testEndIndexInput.value);
+        const onlyFavorites = document.getElementById('test-only-favorites').checked;
+        
+        console.log('Updating with values:', { startValue, endValue, onlyFavorites });
+        
+        // Count available questions in the range
+        let availableQuestions = 0;
+        for (let i = startValue - 1; i < endValue; i++) {
+            const questionId = quizQuestions[i].question;
+            if (!onlyFavorites || favorites[questionId]) {
+                availableQuestions++;
+            }
+        }
+        
+        console.log('Available questions count:', availableQuestions);
+        
+        testQuestionCountInput.max = availableQuestions;
+        
+        // Always update the value to the maximum available questions
+        console.log('Setting question count to maximum:', availableQuestions);
+        testQuestionCountInput.value = availableQuestions;
+        
+        // Show error if no questions are available
+        if (availableQuestions === 0) {
+            const errorMessage = onlyFavorites ? 
+                'No favorite questions available in the selected range' : 
+                'No questions available in the selected range';
+            console.log('Showing error:', errorMessage);
+            testRangeErrorMessage.textContent = errorMessage;
+            testRangeErrorMessage.classList.remove('hidden');
+        } else {
+            console.log('Hiding error message');
+            testRangeErrorMessage.classList.add('hidden');
+        }
+    };
+
     const validateTestRangeInputs = () => {
+        console.log('validateTestRangeInputs called');
         const startValue = parseInt(testStartIndexInput.value);
         const endValue = parseInt(testEndIndexInput.value);
         const questionCount = parseInt(testQuestionCountInput.value);
         const totalQuestions = quizQuestions.length;
+        
+        console.log('Input values:', { startValue, endValue, questionCount, totalQuestions });
         
         testRangeErrorMessage.classList.add('hidden');
         testRangeErrorMessage.textContent = '';
@@ -358,38 +401,42 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (isNaN(startValue) || startValue < 1) {
             testRangeErrorMessage.textContent = 'Start index must be at least 1';
             testRangeErrorMessage.classList.remove('hidden');
+            console.log('Validation failed: Start index invalid');
             return false;
         }
         
         if (isNaN(endValue) || endValue > totalQuestions) {
             testRangeErrorMessage.textContent = `End index cannot exceed ${totalQuestions}`;
             testRangeErrorMessage.classList.remove('hidden');
+            console.log('Validation failed: End index invalid');
             return false;
         }
         
         if (startValue > endValue) {
             testRangeErrorMessage.textContent = 'Start index cannot be greater than end index';
             testRangeErrorMessage.classList.remove('hidden');
+            console.log('Validation failed: Start > End');
             return false;
         }
-        
-        const rangeSize = endValue - startValue + 1;
         
         if (isNaN(questionCount) || questionCount < 1) {
             testRangeErrorMessage.textContent = 'Number of questions must be at least 1';
             testRangeErrorMessage.classList.remove('hidden');
+            console.log('Validation failed: Question count invalid');
             return false;
         }
         
-        if (questionCount > rangeSize) {
-            testRangeErrorMessage.textContent = `Number of questions cannot exceed range size (${rangeSize})`;
+        if (questionCount > parseInt(testQuestionCountInput.max)) {
+            testRangeErrorMessage.textContent = `Number of questions cannot exceed available questions (${testQuestionCountInput.max})`;
             testRangeErrorMessage.classList.remove('hidden');
+            console.log('Validation failed: Question count > available questions');
             return false;
         }
         
+        console.log('Validation successful');
         return true;
     };
-    
+
     const initializeTest = () => {
         if (!validateTestRangeInputs()) {
             return;
@@ -398,6 +445,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const startValue = parseInt(testStartIndexInput.value);
         const endValue = parseInt(testEndIndexInput.value);
         const questionCount = parseInt(testQuestionCountInput.value);
+        const onlyFavorites = document.getElementById('test-only-favorites').checked;
         
         testQuestions = [];
         currentTestQuestionIndex = 0;
@@ -406,7 +454,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         const availableQuestions = [];
         for (let i = startValue - 1; i < endValue; i++) {
-            availableQuestions.push(quizQuestions[i]);
+            const questionId = quizQuestions[i].question;
+            if (!onlyFavorites || favorites[questionId]) {
+                availableQuestions.push(quizQuestions[i]);
+            }
+        }
+        
+        if (availableQuestions.length === 0) {
+            testRangeErrorMessage.textContent = onlyFavorites ? 
+                'No favorite questions available in the selected range' : 
+                'No questions available in the selected range';
+            testRangeErrorMessage.classList.remove('hidden');
+            return;
         }
         
         const shuffledQuestions = shuffleArray([...availableQuestions]);
@@ -525,7 +584,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         loadTestQuestion();
     };
-    
+
     // Navigation functionality
     const handleNavigation = () => {
         navLinks.forEach(link => {
@@ -786,28 +845,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     testNextBtn.addEventListener('click', nextTestQuestion);
     
     testStartIndexInput.addEventListener('change', () => {
-        validateTestRangeInputs();
+        console.log('Start index changed');
         updateTestQuestionCount();
+        validateTestRangeInputs();
     });
     
     testEndIndexInput.addEventListener('change', () => {
-        validateTestRangeInputs();
+        console.log('End index changed');
         updateTestQuestionCount();
+        validateTestRangeInputs();
     });
-    
-    const updateTestQuestionCount = () => {
-        if (validateTestRangeInputs()) {
-            const startValue = parseInt(testStartIndexInput.value);
-            const endValue = parseInt(testEndIndexInput.value);
-            const rangeSize = endValue - startValue + 1;
-            
-            testQuestionCountInput.max = rangeSize;
-            
-            if (parseInt(testQuestionCountInput.value) > rangeSize) {
-                testQuestionCountInput.value = rangeSize;
-            }
-        }
-    };
+
+    if (testOnlyFavoritesCheckbox) {
+        console.log('Adding click listener to test-only-favorites checkbox');
+        testOnlyFavoritesCheckbox.addEventListener('click', () => {
+            console.log('Checkbox clicked, current state:', testOnlyFavoritesCheckbox.checked);
+            updateTestQuestionCount();
+            validateTestRangeInputs();
+        });
+    }
 
     // Add this event listener to reload a question when the checkbox is toggled
     const use8AnswersCheckbox = document.getElementById('use-8-answers');

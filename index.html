@@ -14,7 +14,7 @@
     <nav class="main-nav">
         <div class="nav-brand">
             <span class="app-name">PWA Quiz App</span>
-            <span class="version-text" id="version-display">v 1.058</span>
+            <span class="version-text" id="version-display">v 1.059</span>
         </div>
         <ul class="nav-items">
             <li><a href="#" class="nav-link active" data-section="training">Training</a></li>
@@ -103,6 +103,10 @@
                     <div class="input-group" style="margin-top: 10px;">
                         <label for="test-question-count">Number of Questions:</label>
                         <input type="number" id="test-question-count" min="1" value="10">
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="test-only-favorites">
+                        <label for="test-only-favorites">Only favorites</label>
                     </div>
                     <p id="test-range-error" class="error-message hidden"></p>
                     <div class="test-status">
